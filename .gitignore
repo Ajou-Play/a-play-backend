@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+**/resources/application-dev.yml
+**/resources/application-oauth.yml
+
 ### STS ###
 .apt_generated
 .classpath

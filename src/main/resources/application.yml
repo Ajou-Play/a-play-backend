@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: aplay
+  profiles:
+    include:
+      - oauth
+  data:
+    redis:
+      repositories:
+        enabled: false
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
+  jwt:
+    issuer: backfro
+    accessToken:
+      header: accessToken
+      expiry-seconds: 1800
+    refreshToken:
+      header: refreshToken
+      expiry-seconds: 604800
+    blacklistPrefix: BlackList_AccessToken_
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 50MB
