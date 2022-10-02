@@ -2,7 +2,6 @@ package com.paran.aplay.user.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.common.entity.BaseEntity;
 import com.paran.aplay.team.domain.Team;
 import javax.persistence.Column;
@@ -29,6 +28,7 @@ import lombok.NoArgsConstructor;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserTeam extends BaseEntity {
+
   @Id
   @GeneratedValue(strategy = IDENTITY)
   @Column(name = "user_team_id")
@@ -41,4 +41,9 @@ public class UserTeam extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "team_id")
   private Team team;
+
+  public UserTeam(User user, Team team) {
+    this.user = user;
+    this.team = team;
+  }
 }

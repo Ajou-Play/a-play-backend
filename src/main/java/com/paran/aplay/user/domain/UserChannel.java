@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 @Table(
     name = "user_channel",
     uniqueConstraints = {
-      @UniqueConstraint(
-          name = "unq_user_channel_user_id_channel_id",
-          columnNames = {"user_id", "channel_id"}
-      )
+        @UniqueConstraint(
+            name = "unq_user_channel_user_id_channel_id",
+            columnNames = {"user_id", "channel_id"}
+        )
     }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,4 +40,9 @@ public class UserChannel extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "channel_id")
   private Channel channel;
+
+  public UserChannel(User user, Channel channel) {
+    this.user = user;
+    this.channel = channel;
+  }
 }

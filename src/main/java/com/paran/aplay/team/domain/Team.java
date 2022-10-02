@@ -1,6 +1,10 @@
 package com.paran.aplay.team.domain;
 
+import static com.paran.aplay.common.ErrorCode.*;
+import static org.springframework.util.StringUtils.*;
+
 import com.paran.aplay.common.entity.BaseEntity;
+import com.paran.aplay.common.error.exception.InvalidRequestException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,4 +27,10 @@ public class Team extends BaseEntity {
 
   @Column(nullable = false, length = 100)
   private String name;
+
+  public Team(String name) {
+    if(!hasText(name)) {
+      throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
+    }
+  }
 }

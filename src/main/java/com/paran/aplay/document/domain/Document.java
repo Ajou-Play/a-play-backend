@@ -1,7 +1,12 @@
 package com.paran.aplay.document.domain;
 
+import static com.paran.aplay.common.ErrorCode.*;
+import static org.springframework.util.StringUtils.*;
+
 import com.paran.aplay.channel.domain.Channel;
+import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.entity.BaseEntity;
+import com.paran.aplay.common.error.exception.InvalidRequestException;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,11 +16,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,4 +48,16 @@ public class Document extends BaseEntity {
 
   @Lob
   private String content;
+
+  @Builder
+  public Document(Channel channel, String title, DocumentType type, String content) {
+    if (!hasText(content) || !hasText(title)) {
+      throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
+    }
+
+    this.channel = channel;
+    this.title = title;
+    this.type = type;
+    this.content = content;
+  }
 }

@@ -17,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Chat {
+
   @Id
   @GeneratedValue(strategy = IDENTITY)
   @Column(name = "chat_id")
@@ -41,8 +43,9 @@ public class Chat {
   @Lob
   private String content;
 
+  @Builder
   public Chat(User writer, Channel channel, String content) {
-    if(!hasText(content)) {
+    if (!hasText(content)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
     this.writer = writer;

@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("OAUTH")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OAuthUser extends User{
+public class OAuthUser extends User {
+
   @Enumerated(EnumType.STRING)
   @Column(name = "provider")
   private AuthProvider provider;
@@ -22,7 +23,8 @@ public class OAuthUser extends User{
   private String providerId;
 
   @Builder
-  public OAuthUser(String email, String name, AuthProvider provider, String providerId, Authority authority) {
+  public OAuthUser(String email, String name, AuthProvider provider, String providerId,
+      Authority authority) {
     super(email, name, authority);
     this.provider = provider;
     this.providerId = providerId;

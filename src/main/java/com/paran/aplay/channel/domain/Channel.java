@@ -40,10 +40,10 @@ public class Channel {
   private Team team;
 
   public Channel(String name, Team team) {
-    if(!hasText(name)) {
+    if (!hasText(name)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
-    if(isNull(team)) {
+    if (isNull(team)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
     this.name = name;

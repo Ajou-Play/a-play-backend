@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @DiscriminatorValue("LOCAL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LocalUser extends User{
+public class LocalUser extends User {
 
   private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
 
