@@ -1,17 +1,29 @@
 package com.paran.aplay.chat.domain;
 
+import static com.paran.aplay.common.ErrorCode.*;
 import static javax.persistence.GenerationType.IDENTITY;
+import static org.springframework.util.StringUtils.*;
 
 import com.paran.aplay.channel.domain.Channel;
+import com.paran.aplay.common.error.exception.InvalidRequestException;
 import com.paran.aplay.user.domain.User;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "chat")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Chat {
   @Id
   @GeneratedValue(strategy = IDENTITY)
@@ -28,4 +40,13 @@ public class Chat {
 
   @Lob
   private String content;
+
+  public Chat(User writer, Channel channel, String content) {
+    if(!hasText(content)) {
+      throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
+    }
+    this.writer = writer;
+    this.channel = channel;
+    this.content = content;
+  }
 }
