@@ -4,17 +4,13 @@ spring:
   profiles:
     include:
       - oauth
-  data:
-    redis:
-      repositories:
-        enabled: false
   jpa:
     open-in-view: false
     properties:
       hibernate:
         default_batch_fetch_size: 1000
   jwt:
-    issuer: backfro
+    issuer: aplay
     accessToken:
       header: accessToken
       expiry-seconds: 1800

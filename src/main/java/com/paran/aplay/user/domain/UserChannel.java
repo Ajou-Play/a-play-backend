@@ -34,10 +34,10 @@ public class UserChannel extends BaseEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_channel_user_id")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_channel_channel_id")
+  @JoinColumn(name = "channel_id")
   private Channel channel;
 }

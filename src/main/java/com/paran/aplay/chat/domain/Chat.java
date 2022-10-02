@@ -19,11 +19,11 @@ public class Chat {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "chat_user_id")
+  @JoinColumn(name = "user_id")
   private User writer;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "chat_channel_id")
+  @JoinColumn(name = "channel_id")
   private Channel channel;
 
   @Lob

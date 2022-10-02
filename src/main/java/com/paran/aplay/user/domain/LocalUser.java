@@ -27,8 +27,8 @@ public class LocalUser extends User{
   private String password;
 
   @Builder
-  public LocalUser(String email, String name, String password) {
-    super(email, name);
+  public LocalUser(String email, String name, String password, Authority authority) {
+    super(email, name, authority);
     this.password = password;
   }
 

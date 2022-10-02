@@ -31,7 +31,7 @@ public class Document extends BaseEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "document_channel_id")
+  @JoinColumn(name = "channel_id")
   private Channel channel;
 
   @Column(nullable = false, length = 100)

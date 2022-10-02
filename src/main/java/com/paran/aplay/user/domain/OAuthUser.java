@@ -22,8 +22,8 @@ public class OAuthUser extends User{
   private String providerId;
 
   @Builder
-  public OAuthUser(String email, String name, AuthProvider provider, String providerId) {
-    super(email, name);
+  public OAuthUser(String email, String name, AuthProvider provider, String providerId, Authority authority) {
+    super(email, name, authority);
     this.provider = provider;
     this.providerId = providerId;
   }

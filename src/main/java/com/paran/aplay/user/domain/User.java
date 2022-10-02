@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +53,10 @@ public class User extends BaseEntity {
   @Column(name = "is_quit")
   private Boolean isQuit = false;
 
-  public User(String email, String name) {
+  @Enumerated(EnumType.STRING)
+  private Authority authority = Authority.ADMIN;
+
+  public User(String email, String name, Authority authority) {
     if (!hasText(email)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
@@ -62,6 +67,7 @@ public class User extends BaseEntity {
     validateEmail(email);
     validateName(name);
 
+    this.authority = authority;
     this.email = email;
     this.name = name;
   }

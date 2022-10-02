@@ -35,10 +35,10 @@ public class UserTeam extends BaseEntity {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_team_user_id")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_team_team_id")
+  @JoinColumn(name = "team_id")
   private Team team;
 }
