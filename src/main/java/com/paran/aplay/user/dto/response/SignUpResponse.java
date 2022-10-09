@@ -12,13 +12,13 @@ public class SignUpResponse {
 
   private final String email;
 
-  private final String nickname;
+  private final String name;
 
   public static SignUpResponse from(User user) {
     return SignUpResponse.builder()
         .userId(user.getId())
         .email(user.getEmail())
-        .nickname(user.getName())
+        .name(user.getName())
         .build();
   }
 }
