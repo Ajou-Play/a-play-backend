@@ -30,8 +30,16 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    //embedded redis
+    implementation('it.ozimov:embedded-redis:0.7.3') {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
+
     //mysql
     implementation 'mysql:mysql-connector-java'
+
+    //jwt setting
+    implementation 'com.auth0:java-jwt:3.19.2'
 
     //oauth
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

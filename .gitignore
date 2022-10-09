@@ -7,7 +7,7 @@ build/
 
 **/resources/application-dev.yml
 **/resources/application-oauth.yml
-
+**/resources/binary/**
 ### STS ###
 .apt_generated
 .classpath

@@ -41,16 +41,15 @@ public class User extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "email", length = MAX_EMAIL_LENGTH)
+  @Column(length = MAX_EMAIL_LENGTH)
   private String email;
 
-  @Column(name = "profile_image", length = 300)
+  @Column(length = MAX_PROFILEIMAGE_LENGTH)
   private String profileImage = "";
 
-  @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
+  @Column(nullable = false, length = MAX_NAME_LENGTH)
   private String name;
 
-  @Column(name = "is_quit")
   private Boolean isQuit = false;
 
   @Enumerated(EnumType.STRING)
