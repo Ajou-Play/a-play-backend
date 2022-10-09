@@ -4,6 +4,7 @@ package com.paran.aplay.common.config;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.paran.aplay.common.filter.ExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,8 @@ import javax.annotation.PostConstruct;
 public class WebConfig implements WebMvcConfigurer {
 
   private final ObjectMapper objectMapper;
+
+  private final ExceptionHandlerFilter exceptionHandlerFilter;
 
   @PostConstruct
   public void initObjectMapper() {

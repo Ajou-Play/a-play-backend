@@ -3,6 +3,7 @@ package com.paran.aplay.common.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.ErrorResponse;
+import com.paran.aplay.common.filter.ExceptionHandlerFilter;
 import com.paran.aplay.jwt.JwtAuthenticationFilter;
 import java.io.PrintWriter;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+  private final ExceptionHandlerFilter exceptionHandlerFilter;
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -85,7 +87,8 @@ public class WebSecurityConfig {
         .accessDeniedHandler(accessDeniedHandler)
         .authenticationEntryPoint(authenticationEntryPoint)
         .and()
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class);
 
     return http.build();
   }
