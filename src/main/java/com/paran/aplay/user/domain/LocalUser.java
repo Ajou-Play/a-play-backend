@@ -38,7 +38,7 @@ public class LocalUser extends User {
     }
   }
 
-  private void validatePassword(String password) {
+  public static void validatePassword(String password) {
     if (password.length() > MAX_PASSWORD_LENGTH) {
       throw new InvalidRequestException(INVALID_LENGTH);
     }
