@@ -31,7 +31,7 @@ public class User extends BaseEntity {
 
   private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
-  private static final String NAME_REGEX = "[a-zA-Z가-힣0-9]+( [a-zA-Z가-힣0-9]+)*";
+  private static final String NAME_REGEX = "[a-zA-Z가-힣]+( [a-zA-Z가-힣]+)*";
   private static final int MAX_EMAIL_LENGTH = 100;
   private static final int MAX_NAME_LENGTH = 10;
   private static final int MAX_PROFILEIMAGE_LENGTH = 300;
@@ -41,16 +41,15 @@ public class User extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "email", length = MAX_EMAIL_LENGTH)
+  @Column(length = MAX_EMAIL_LENGTH)
   private String email;
 
-  @Column(name = "profile_image", length = 300)
+  @Column(length = MAX_PROFILEIMAGE_LENGTH)
   private String profileImage = "";
 
-  @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
+  @Column(nullable = false, length = MAX_NAME_LENGTH)
   private String name;
 
-  @Column(name = "is_quit")
   private Boolean isQuit = false;
 
   @Enumerated(EnumType.STRING)

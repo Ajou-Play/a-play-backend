@@ -13,3 +13,6 @@ spring:
       ddl-auto: update
   jwt:
     client-secret: aplay-local-secret
+  redis:
+    host: localhost
+    port: 6379

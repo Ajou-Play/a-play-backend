@@ -20,13 +20,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Team extends BaseEntity {
+
+  private static final int MAX_PROFILEIMAGE_LENGTH = 300;
+
+  private static final int MAX_NAME_LENGTH = 100;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "team_id")
   private Long id;
 
-  @Column(nullable = false, length = 100)
+  @Column(nullable = false, length = MAX_NAME_LENGTH)
   private String name;
+
+  @Column(length = MAX_PROFILEIMAGE_LENGTH)
+  private String profileImage;
 
   public Team(String name) {
     if(!hasText(name)) {
