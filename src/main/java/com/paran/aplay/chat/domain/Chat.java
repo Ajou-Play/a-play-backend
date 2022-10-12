@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +44,9 @@ public class Chat {
   @Lob
   private String content;
 
+  @Transient
+  private MessageType type;
+
   @Builder
   public Chat(User writer, Channel channel, String content) {
     if (!hasText(content)) {
@@ -51,5 +55,13 @@ public class Chat {
     this.writer = writer;
     this.channel = channel;
     this.content = content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public enum MessageType {
+    ENTER, TALK
   }
 }
