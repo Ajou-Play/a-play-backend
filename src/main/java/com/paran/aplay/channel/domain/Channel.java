@@ -34,6 +34,8 @@ import org.springframework.web.socket.WebSocketSession;
 @Slf4j
 public class Channel {
 
+  public static final String defaultName = "일반";
+
   @Id
   @GeneratedValue(strategy = IDENTITY)
   @Column(name = "channel_id")

@@ -71,6 +71,10 @@ public class User extends BaseEntity {
     this.name = name;
   }
 
+  public void updateAuthority(Authority authority) {
+    this.authority = authority;
+  }
+
   private static void validateName(String name) {
     if (name.length() > MAX_NAME_LENGTH) {
       throw new InvalidRequestException(INVALID_LENGTH);

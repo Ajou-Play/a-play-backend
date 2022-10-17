@@ -40,5 +40,6 @@ public class Team extends BaseEntity {
     if(!hasText(name)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
+    this.name = name;
   }
 }

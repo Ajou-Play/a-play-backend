@@ -3,6 +3,7 @@ package com.paran.aplay.team.service;
 import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.team.domain.Team;
+import com.paran.aplay.team.dto.request.TeamCreateRequest;
 import com.paran.aplay.team.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,5 +17,10 @@ public class TeamService {
 
   public Team getTeamById(Long teamId) {
     return teamRepository.findById(teamId).orElseThrow(() -> new NotFoundException(ErrorCode.TEAM_NOT_FOUND));
+  }
+
+  public Team createTeam(String name) {
+    Team team = new Team(name);
+    return teamRepository.save(team);
   }
 }
