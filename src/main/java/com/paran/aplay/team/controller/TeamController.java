@@ -35,8 +35,6 @@ public class TeamController {
   private final TeamService teamService;
   private final ChannelService channelService;
 
-  private final UserService userService;
-
   @GetMapping("/{teamId}/channels")
   public ResponseEntity<ApiResponse<List<ChannelResponse>>> getAllChannelsByTeam(@PathVariable("teamId") Long teamId) {
     Team team = teamService.getTeamById(teamId);
@@ -51,14 +49,16 @@ public class TeamController {
   }
 
   @PostMapping
-  public ResponseEntity<ApiResponse<TeamResponse>> createTeam(@RequestBody @Valid TeamCreateRequest request) {
+  public ResponseEntity<ApiResponse<TeamResponse>> createTeam(@CurrentUser User user, @RequestBody @Valid TeamCreateRequest request) {
     Team newTeam = teamService.createTeam(request.getName());
+    teamService.inviteUserToTeam(user, newTeam);
+    Channel generalChannel = channelService.createChannel(Channel.defaultName, newTeam);
+    channelService.inviteUserToChannel(user, generalChannel);
     ApiResponse apiResponse = ApiResponse.builder()
         .message("팀 생성에 성공했습니다.")
         .status(CREATED.value())
         .data(TeamResponse.from(newTeam))
         .build();
-    channelService.createChannel(Channel.defaultName, newTeam);
     return ResponseEntity.created(URI.create("/")).body(apiResponse);
   }
 }

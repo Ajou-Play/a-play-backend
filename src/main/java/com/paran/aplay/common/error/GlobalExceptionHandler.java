@@ -6,6 +6,7 @@ import com.paran.aplay.common.error.exception.AlreadyExistsException;
 import com.paran.aplay.common.error.exception.AuthErrorException;
 import com.paran.aplay.common.error.exception.InvalidRequestException;
 import com.paran.aplay.common.error.exception.NotFoundException;
+import com.paran.aplay.common.error.exception.PermissionDeniedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -118,6 +119,12 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleAuthErrorException(AuthErrorException e) {
     return handleException(e, e.getErrorCode());
   }
+
+  @ExceptionHandler(PermissionDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(PermissionDeniedException e) {
+    return handleException(e, e.getErrorCode());
+  }
+
   private ResponseEntity<ErrorResponse> handleException(Exception e, ErrorCode errorCode) {
     log.warn(e.getMessage(), e);
     ErrorResponse errorResponse = ErrorResponse.of(errorCode);

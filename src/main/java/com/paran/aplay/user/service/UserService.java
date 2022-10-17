@@ -3,14 +3,21 @@ package com.paran.aplay.user.service;
 import static com.paran.aplay.common.ErrorCode.*;
 import static org.springframework.util.StringUtils.*;
 
+import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.common.error.exception.AlreadyExistsException;
 import com.paran.aplay.common.error.exception.InvalidRequestException;
 import com.paran.aplay.common.error.exception.NotFoundException;
+import com.paran.aplay.common.error.exception.PermissionDeniedException;
+import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.user.domain.Authority;
 import com.paran.aplay.user.domain.LocalUser;
 import com.paran.aplay.user.domain.User;
+import com.paran.aplay.user.domain.UserChannel;
+import com.paran.aplay.user.domain.UserTeam;
 import com.paran.aplay.user.dto.request.UserSignUpRequest;
+import com.paran.aplay.user.repository.UserChannelRepository;
 import com.paran.aplay.user.repository.UserRepository;
+import com.paran.aplay.user.repository.UserTeamRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +32,6 @@ public class UserService {
 
   private final UserRepository userRepository;
 
-  private final UserUtilService userUtilService;
 
   @Transactional(readOnly = true)
   public User signIn(String principal, String credentials) {
