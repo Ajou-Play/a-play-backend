@@ -1,8 +1,7 @@
 package com.paran.aplay.team.service;
 
-import static com.paran.aplay.common.ErrorCode.USER_ALREADY_IN_TEAM;
+import static com.paran.aplay.common.ErrorCode.*;
 
-import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.error.exception.AlreadyExistsException;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.team.domain.Team;
@@ -28,7 +27,7 @@ public class TeamService {
 
   @Transactional(readOnly = true)
   public Team getTeamById(Long teamId) {
-    return teamRepository.findById(teamId).orElseThrow(() -> new NotFoundException(ErrorCode.TEAM_NOT_FOUND));
+    return teamRepository.findById(teamId).orElseThrow(() -> new NotFoundException(TEAM_NOT_FOUND));
   }
 
   @Transactional

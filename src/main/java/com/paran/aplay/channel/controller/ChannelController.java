@@ -12,7 +12,9 @@ import com.paran.aplay.common.entity.CurrentUser;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.service.TeamService;
 
+import com.paran.aplay.user.domain.User;
 import java.net.URI;
+import java.net.UnknownServiceException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,10 @@ public class ChannelController {
   private final TeamService teamService;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<ChannelResponse>> createChannel(@RequestBody @Valid ChannelCreateRequest request) {
+  public ResponseEntity<ApiResponse<ChannelResponse>> createChannel(@CurrentUser User user, @RequestBody @Valid ChannelCreateRequest request) {
     Team team = teamService.getTeamById(request.getTeamId());
     Channel channel = channelService.createChannel(request.getName(), team);
+    channelService.inviteUserToChannel(user, channel);
     ChannelResponse channelResponse = ChannelResponse.builder()
         .channelId(channel.getId())
         .name(channel.getName())
