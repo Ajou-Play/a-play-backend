@@ -1,6 +1,8 @@
 package com.paran.aplay.common.config;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,26 +21,26 @@ public class WebConfig implements WebMvcConfigurer {
 
   private final ObjectMapper objectMapper;
 
-  private final ExceptionHandlerFilter exceptionHandlerFilter;
-
   @PostConstruct
   public void initObjectMapper() {
     objectMapper.getFactory().configure(JsonWriteFeature.ESCAPE_NON_ASCII.mappedFeature(), true);
     objectMapper.registerModule(new JavaTimeModule());
+    objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
   }
 
   // 프록시 설정 전까지 일단 도메인들 설정.
+  // 민석이 소켓도 api/v1으로 맵핑되게 하는게 좋은지 물어보기
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/api/v1/**")
-        .allowedOrigins("http://localhost:3000")
+    registry.addMapping("/**")
+        .allowCredentials(false)
+        .allowedOriginPatterns("*")
         .allowedMethods(
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),
             HttpMethod.POST.name(),
             HttpMethod.PUT.name(),
             HttpMethod.DELETE.name(),
-            HttpMethod.PATCH.name())
-        .allowCredentials(true);
+            HttpMethod.PATCH.name());
   }
 }

@@ -35,7 +35,7 @@ public class Chat {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private User writer;
+  private User sender;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "channel_id")
@@ -45,14 +45,14 @@ public class Chat {
   private String content;
 
   @Transient
-  private MessageType type;
+  private MessageType messageType = MessageType.TALK;
 
   @Builder
-  public Chat(User writer, Channel channel, String content) {
+  public Chat(User sender, Channel channel, String content) {
     if (!hasText(content)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
-    this.writer = writer;
+    this.sender = sender;
     this.channel = channel;
     this.content = content;
   }
@@ -61,7 +61,12 @@ public class Chat {
     this.content = content;
   }
 
-  public enum MessageType {
-    ENTER, TALK
+  public void setMessageType(MessageType type) {
+    this.messageType = type;
+  }
+
+  @Override
+  public String toString() {
+    return "chatId : "+this.id+"\nsender : "+this.sender.getId()+"\nchannel : "+this.channel.getId()+"\ncontent : "+this.content+"\n";
   }
 }

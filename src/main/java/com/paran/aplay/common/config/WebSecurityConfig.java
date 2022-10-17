@@ -1,5 +1,7 @@
 package com.paran.aplay.common.config;
 
+import static com.paran.aplay.user.domain.Authority.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.ErrorResponse;
@@ -81,6 +83,8 @@ public class WebSecurityConfig {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
+        .antMatchers("/api/v1/channels/**")
+        .hasAnyAuthority(ADMIN.name(), EDITOR.name())
         .anyRequest().permitAll()
         .and()
         .exceptionHandling()

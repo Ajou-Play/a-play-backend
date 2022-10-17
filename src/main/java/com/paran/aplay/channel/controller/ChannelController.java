@@ -4,11 +4,14 @@ import static org.springframework.http.HttpStatus.*;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.dto.request.ChannelCreateRequest;
-import com.paran.aplay.channel.dto.response.ChannelCreateResponse;
+import com.paran.aplay.channel.dto.response.ChannelResponse;
 import com.paran.aplay.channel.service.ChannelService;
 import com.paran.aplay.common.ApiResponse;
+import com.paran.aplay.common.PageResponse;
+import com.paran.aplay.common.entity.CurrentUser;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.service.TeamService;
+
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +31,10 @@ public class ChannelController {
   private final TeamService teamService;
 
   @PostMapping
-  public ResponseEntity<ApiResponse<ChannelCreateResponse>> createChannel(@RequestBody @Valid ChannelCreateRequest request) {
+  public ResponseEntity<ApiResponse<ChannelResponse>> createChannel(@RequestBody @Valid ChannelCreateRequest request) {
     Team team = teamService.getTeamById(request.getTeamId());
     Channel channel = channelService.createChannel(request.getName(), team);
-    ChannelCreateResponse channelResponse = ChannelCreateResponse.builder()
+    ChannelResponse channelResponse = ChannelResponse.builder()
         .channelId(channel.getId())
         .name(channel.getName())
         .teamId(channel.getTeam().getId())
