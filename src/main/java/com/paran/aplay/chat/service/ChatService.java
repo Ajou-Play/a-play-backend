@@ -29,14 +29,6 @@ public class ChatService {
 
   private final ChannelService channelService;
 
-  public <T> void sendMessage (WebSocketSession session, T message) {
-    try {
-      session.sendMessage(new TextMessage(objectMapper.writeValueAsString(ChatResponse.from((Chat) message))));
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-    }
-  }
-
   @Transactional(readOnly = true)
   public Chat createChatMessage (ChatRequest chatRequest) {
     User sender = userUtilService.getUserById(chatRequest.getSenderId());
