@@ -34,8 +34,6 @@ public enum ErrorCode {
   EMAIL_REQUIRED(400, "U008", "이메일은 필수입니다."),
   ROLE_NOT_FOUND(400, "U009", "역할이 존재하지 않습니다."),
   USER_PARAM_REQUIRED(400, "U010", "유저가 누락되었습니다."),
-  USER_PROFILE_NOT_MATCHED(400, "U011", "수정할 프로필 사진이 누락되었으며, 유저의 기존 프로필 이미지와 다른 링크입니다."),
-  NICKNAME_ALREADY_EXISTS(400, "U012", "이미 존재하는 닉네임입니다."),
   TOKEN_NOT_EXPIRED(400, "U013", "토큰이 아직 만료되지 않았으므로 재발행할 수 없습니다."),
   PASSWORD_CANNOT_BE_SAME(400, "U014", "새 비밀번호는 이전 비밀번호와 같을 수 없습니다."),
   REDIS_TOKEN_NOT_FOUND(500, "U015", "유저에 해당하는 토큰을 찾을 수 없습니다."),
@@ -43,7 +41,16 @@ public enum ErrorCode {
   BLACKLIST_TOKEN_REQUEST(400, "U017", "로그아웃 처리된 토큰으로 요청할 수 없습니다."),
   OAUTH_PROVIDER_UNSUPPORTED(500, "U018", "아직 지원되지 않은 소셜로그인입니다."),
 
-  OAUTH_EMAIL_REQUIRED(500, "U019", "OAuth email을 수집하는데 실패하였습니다.");
+  OAUTH_EMAIL_REQUIRED(500, "U019", "OAuth email을 수집하는데 실패하였습니다."),
+  USER_NOT_ALLOWED(400, "U020", "해당 유저는 권한이 없습니다."),
+  USER_ALREADY_IN_TEAM(400, "U021", "해당 유저는 이미 팀에 초대되어 있습니다."),
+  USER_ALREADY_IN_CHANNEL(400, "U022", "해당 유저는 이미 채널에 초대되어 있습니다."),
+
+  //Channel
+  CHANNEL_NOT_FOUND(500, "CNL001", "채널을 찾을 수 없습니다."),
+
+  //Team
+  TEAM_NOT_FOUND(500, "T001", "팀을 찾을 수 없습니다.");
   private final int status;
   private final String code;
   private final String message;

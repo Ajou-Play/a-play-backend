@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class Chat {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private User writer;
+  private User sender;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "channel_id")
@@ -43,13 +44,29 @@ public class Chat {
   @Lob
   private String content;
 
+  @Transient
+  private MessageType messageType = MessageType.TALK;
+
   @Builder
-  public Chat(User writer, Channel channel, String content) {
+  public Chat(User sender, Channel channel, String content) {
     if (!hasText(content)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
-    this.writer = writer;
+    this.sender = sender;
     this.channel = channel;
     this.content = content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public void setMessageType(MessageType type) {
+    this.messageType = type;
+  }
+
+  @Override
+  public String toString() {
+    return "chatId : "+this.id+"\nsender : "+this.sender.getId()+"\nchannel : "+this.channel.getId()+"\ncontent : "+this.content+"\n";
   }
 }
