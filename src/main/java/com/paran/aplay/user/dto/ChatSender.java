@@ -19,11 +19,14 @@ public class ChatSender {
 
   private String name;
 
+  private String profileImage;
+
   public static ChatSender from(User user) {
     return ChatSender.builder()
         .userId(user.getId())
         .email(user.getEmail())
         .name(user.getName())
+        .profileImage(user.getProfileImage())
         .build();
   }
 

@@ -22,6 +22,7 @@ import java.util.concurrent.TimeoutException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -109,6 +110,7 @@ public class StompSupportTest {
   }
 
   @Test
+  @DisplayName("소켓 연결 후 stompCli publish, subscribe 통신 테스트")
   public void testChat() throws ExecutionException, InterruptedException, TimeoutException {
     /* GIVEN */
     MessageFrameHandler<ChatResponse> handler = new MessageFrameHandler<>(ChatResponse.class);

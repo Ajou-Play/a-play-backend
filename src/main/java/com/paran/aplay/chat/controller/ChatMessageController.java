@@ -4,14 +4,11 @@ import com.paran.aplay.chat.domain.Chat;
 import com.paran.aplay.chat.domain.MessageType;
 import com.paran.aplay.chat.dto.ChatRequest;
 import com.paran.aplay.chat.dto.ChatResponse;
-import com.paran.aplay.chat.repository.ChatRepository;
 import com.paran.aplay.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
