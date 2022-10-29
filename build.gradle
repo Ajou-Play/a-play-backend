@@ -2,10 +2,11 @@ plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
     id 'java'
+    id 'com.google.cloud.tools.jib' version '3.2.1'
 }
 
 group = 'com.paran'
-version = '0.0.1-SNAPSHOT'
+version = 'prod'
 sourceCompatibility = '17'
 
 configurations {
@@ -52,6 +53,30 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
+jib {
+    from {
+        image = "openjdk:17"
+    }
+    to {
+        image = getPrefix() + "aplay-backend"
+        tags= [getDate()]
+    }
+    container {
+        creationTime = "USE_CURRENT_TIMESTAMP"
+        ports=['8080']
+    }
+}
+
+static def getPrefix() {
+    return "docker.io/minshigee/"
+}
+
+static def getDate() {
+    new Date().format('yyyyMMddHHmm')
+}
+
 tasks.named('test') {
-    useJUnitPlatform()
+
+    /* 초기 Build용 후에 제거 */
+    /* useJUnitPlatform() */
 }
