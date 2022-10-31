@@ -1,8 +1,7 @@
 package com.paran.aplay.chat.dto;
 
-import com.paran.aplay.chat.domain.Chat;
+import com.paran.aplay.chat.domain.ChatMessage;
 import com.paran.aplay.chat.domain.MessageType;
-import com.paran.aplay.chat.repository.ChatRepository;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.dto.ChatSender;
 import lombok.AllArgsConstructor;
@@ -23,13 +22,13 @@ public class ChatResponse {
 
   private String content;
 
-  public static ChatResponse from(Chat chat) {
-    User sender = chat.getSender();
+  public static ChatResponse from(ChatMessage chatMessage) {
+    User sender = chatMessage.getSender();
     return ChatResponse.builder()
-        .channelId(chat.getChannel().getId())
-        .sender(ChatSender.from(chat.getSender()))
-        .content(chat.getContent())
-        .type(chat.getMessageType())
+        .channelId(chatMessage.getChannel().getId())
+        .sender(ChatSender.from(chatMessage.getSender()))
+        .content(chatMessage.getContent())
+        .type(chatMessage.getMessageType())
         .build();
   }
 
