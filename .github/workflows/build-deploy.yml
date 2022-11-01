@@ -31,8 +31,12 @@ jobs:
         run: git clone https://github.com/Ajou-Play/secrets-env.git
   
       - 
-        name: change Secrets
+        name: Change Secrets
         run: mv secrets-env/application-local.yml src/main/resources/application-local.yml
+        
+      - 
+        name: Log Secrets
+        run: cat src/main/resources/application-local.yml | grep url
 
       -
         name: Login to Docker Hub
