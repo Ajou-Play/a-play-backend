@@ -11,7 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - 
+        name: Configure git
+        env:
+          TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
+        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+        
+      - 
+        name: Exec Submodule
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.SUBMODULE_TOKEN }}
           submodules: true
@@ -23,12 +31,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-
-      - 
-        name: Configure git
-        env:
-          TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
-        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
   
       - 
         name: Clone Secrets
