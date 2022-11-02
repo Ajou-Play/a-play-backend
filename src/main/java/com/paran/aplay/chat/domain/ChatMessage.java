@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "chat")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Chat {
+public class ChatMessage {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
@@ -48,7 +48,7 @@ public class Chat {
   private MessageType messageType = MessageType.TALK;
 
   @Builder
-  public Chat(User sender, Channel channel, String content) {
+  public ChatMessage(User sender, Channel channel, String content) {
     if (!hasText(content)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }

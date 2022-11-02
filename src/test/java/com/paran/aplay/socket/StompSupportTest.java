@@ -4,13 +4,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.service.ChannelService;
+import com.paran.aplay.chat.domain.ChatMessage;
 import com.paran.aplay.chat.domain.MessageType;
 import com.paran.aplay.chat.dto.ChatRequest;
 import com.paran.aplay.chat.dto.ChatResponse;
+import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.service.TeamService;
-import com.paran.aplay.user.domain.Authority;
-import com.paran.aplay.user.domain.LocalUser;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.dto.request.UserSignUpRequest;
 import com.paran.aplay.user.service.UserService;
@@ -55,6 +55,8 @@ public class StompSupportTest {
   private final WebSocketStompClient websocketClient;
 
   private final UserService userService;
+
+  private final ChatService chatService;
   private User testUser;
 
   private Team testTeam;
@@ -63,10 +65,11 @@ public class StompSupportTest {
 
   @Autowired
   public StompSupportTest(ChannelService channelService, TeamService teamService,
-      UserService userService) {
+      UserService userService, ChatService chatService) {
     this.channelService = channelService;
     this.teamService = teamService;
     this.userService = userService;
+    this.chatService = chatService;
     this.websocketClient = new WebSocketStompClient(new SockJsClient(createTransport()));
     this.websocketClient.setMessageConverter(new MappingJackson2MessageConverter());
     this.url = "ws://localhost:";
@@ -123,12 +126,35 @@ public class StompSupportTest {
     this.stompSession.send("/pub/chat/message", request);
 
     /* THEN */
-    ChatResponse response = handler.getCompletableFuture().get(30, TimeUnit.SECONDS);
+    ChatResponse response = handler.getCompletableFuture().get(10, TimeUnit.SECONDS);
 
     assertThat(response).isNotNull();
     assertThat(response.getContent()).isEqualTo(content);
     assertThat(response.getSender().getUserId()).isEqualTo(testUser.getId());
     assertThat(response.getSender().getName()).isEqualTo(testUser.getName());
-    // dto 내부에 NoArgsConstructor 없어서 메세지 받았는데도 불구하고 parsing 못하고 있었던 것...
   }
+  @Test
+  @DisplayName("채팅 송신 후 저장 확인 테스트")
+  public void testChatSaved() throws ExecutionException, InterruptedException, TimeoutException {
+    /* GIVEN */
+    MessageFrameHandler<ChatResponse> handler = new MessageFrameHandler<>(ChatResponse.class);
+    String content = "Hello motherfuckers!";
+    String destination = "/sub/chat/message/channel/"+testChannel.getId();
+    this.stompSession.subscribe(destination, handler);
+    ChatRequest request = ChatRequest.builder()
+        .channelId(testChannel.getId())
+        .senderId(testUser.getId())
+        .type(MessageType.TALK)
+        .content(content)
+        .build();
+    /* WHEN */
+    this.stompSession.send("/pub/chat/message", request);
+
+    handler.getCompletableFuture().get(10, TimeUnit.SECONDS);
+    /* THEN */
+    List<ChatMessage> messages = chatService.getChatMessageList();
+    assertThat(messages.size()).isEqualTo(1);
+    assertThat(messages.get(0).getContent()).isEqualTo(content);
+  }
+
 }

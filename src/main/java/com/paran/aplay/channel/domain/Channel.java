@@ -5,13 +5,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static org.springframework.util.StringUtils.*;
 import static java.util.Objects.*;
 
-import com.paran.aplay.chat.domain.Chat;
-import com.paran.aplay.chat.domain.MessageType;
-import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.common.error.exception.InvalidRequestException;
 import com.paran.aplay.team.domain.Team;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,12 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.socket.WebSocketSession;
 
 @Entity
 @Table(name = "channel")

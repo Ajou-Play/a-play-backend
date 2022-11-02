@@ -50,7 +50,10 @@ public enum ErrorCode {
   CHANNEL_NOT_FOUND(500, "CNL001", "채널을 찾을 수 없습니다."),
 
   //Team
-  TEAM_NOT_FOUND(500, "T001", "팀을 찾을 수 없습니다.");
+  TEAM_NOT_FOUND(500, "T001", "팀을 찾을 수 없습니다."),
+
+  //Chat
+  CHAT_NOT_FOUND(500, "CHT001", "채팅을 찾을 수 없습니다.");
   private final int status;
   private final String code;
   private final String message;
