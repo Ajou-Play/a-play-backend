@@ -1,3 +1,4 @@
 [submodule "aplay-be-secrets"]
 	path = aplay-be-secrets
 	url = https://github.com/Ajou-Play/aplay-be-secrets
+	branch = main

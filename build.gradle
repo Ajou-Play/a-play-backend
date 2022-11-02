@@ -55,3 +55,11 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+task copyPrivate(type: Copy) {
+    copy {
+        from './aplay-be-secrets'
+        include "application-dev.yml"
+        into 'src/main/resources'
+    }
+}
