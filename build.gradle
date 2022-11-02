@@ -80,3 +80,11 @@ tasks.named('test') {
     /* 초기 Build용 후에 제거 */
     /* useJUnitPlatform() */
 }
+
+task copyPrivate(type: Copy) {
+    copy {
+        from './aplay-be-secrets'
+        include "application-dev.yml"
+        into 'src/main/resources'
+    }
+}
