@@ -4,6 +4,7 @@ spring:
   profiles:
     include:
       - oauth
+      - local
   jpa:
     open-in-view: false
     properties:
