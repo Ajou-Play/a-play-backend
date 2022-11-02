@@ -31,12 +31,6 @@ public class ChannelService {
   private final UserUtilService userUtilService;
 
   @Transactional(readOnly = true)
-  public Channel getChannelById(Long channelId) {
-    return channelRepository.findById(channelId).orElseThrow(() -> new NotFoundException(
-        CHANNEL_NOT_FOUND));
-  }
-
-  @Transactional(readOnly = true)
   public List<Channel> getAllChannelsByTeam(Team team) {
     return channelRepository.findByTeamId(team.getId());
   }

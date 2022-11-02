@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static org.springframework.util.StringUtils.*;
 
 import com.paran.aplay.channel.domain.Channel;
+import com.paran.aplay.common.entity.BaseEntity;
 import com.paran.aplay.common.error.exception.InvalidRequestException;
 import com.paran.aplay.user.domain.User;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "chat")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ChatMessage {
+public class ChatMessage extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
