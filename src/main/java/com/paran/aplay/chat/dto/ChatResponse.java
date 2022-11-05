@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,8 @@ public class ChatResponse {
 
   private String content;
 
+  private LocalDateTime createdAt;
+
   public static ChatResponse from(ChatMessage chatMessage) {
     User sender = chatMessage.getSender();
     return ChatResponse.builder()
@@ -29,6 +33,7 @@ public class ChatResponse {
         .sender(ChatSender.from(chatMessage.getSender()))
         .content(chatMessage.getContent())
         .type(chatMessage.getMessageType())
+        .createdAt(chatMessage.getCreatedAt())
         .build();
   }
 

@@ -152,7 +152,7 @@ public class StompSupportTest {
 
     handler.getCompletableFuture().get(10, TimeUnit.SECONDS);
     /* THEN */
-    List<ChatMessage> messages = chatService.getChatMessageList();
+    List<ChatMessage> messages = chatService.getAllChatMessages();
     assertThat(messages.size()).isEqualTo(1);
     assertThat(messages.get(0).getContent()).isEqualTo(content);
   }

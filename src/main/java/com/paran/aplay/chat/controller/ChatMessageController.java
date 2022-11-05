@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 @Controller
 public class ChatMessageController {
-  private final ChatService chatService;
+    private final ChatService chatService;
 
-  @MessageMapping("/chat/message")
-  public void message(ChatRequest request) {
-    chatService.sendMessage(request);
-  }
+    @MessageMapping("/chat/message")
+    public void message(ChatRequest request) {
+        chatService.sendMessage(request);
+    }
 }

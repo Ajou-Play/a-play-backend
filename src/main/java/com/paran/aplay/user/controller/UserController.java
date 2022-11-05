@@ -17,6 +17,7 @@ import com.paran.aplay.user.service.UserUtilService;
 import java.net.URI;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,12 @@ public class UserController {
             .refreshToken(refreshToken)
             .build())
         .build();
-    return ResponseEntity.ok(response);
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("accessToken", principal.getAccessToken());
+    headers.add("refreshToken", refreshToken);
+    return ResponseEntity.ok()
+            .headers(headers)
+            .body(response);
   }
 
   @PostMapping("/signup")
