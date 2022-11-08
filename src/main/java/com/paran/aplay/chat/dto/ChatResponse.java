@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ChatResponse {
-  private MessageType type;
+  private String type;
 
   private ChatSender sender;
 
@@ -35,7 +35,7 @@ public class ChatResponse {
         .channelId(chatMessage.getChannel().getId())
         .sender(ChatSender.from(chatMessage.getSender()))
         .content(chatMessage.getContent())
-        .type(chatMessage.getMessageType())
+        .type(chatMessage.getMessageType().toString())
         .createdAt(chatMessage.getCreatedAt())
         .build();
   }
