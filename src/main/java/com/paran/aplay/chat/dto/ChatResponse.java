@@ -1,5 +1,7 @@
 package com.paran.aplay.chat.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.paran.aplay.chat.domain.ChatMessage;
 import com.paran.aplay.chat.domain.MessageType;
 import com.paran.aplay.user.domain.User;
@@ -24,6 +26,7 @@ public class ChatResponse {
 
   private String content;
 
+  @JsonSerialize(using = LocalDateTimeSerializer.class)
   private LocalDateTime createdAt;
 
   public static ChatResponse from(ChatMessage chatMessage) {
