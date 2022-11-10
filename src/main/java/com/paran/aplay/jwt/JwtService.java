@@ -12,6 +12,8 @@ import com.paran.aplay.jwt.claims.AccessClaim;
 import com.paran.aplay.jwt.claims.RefreshClaim;
 import com.paran.aplay.user.domain.User;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,7 +79,7 @@ public class JwtService {
       if (claims.getExp().getTime() - now.getTime() >= 1000 * 60 * 5) {
         throw new InvalidRequestException(TOKEN_NOT_EXPIRED);
       } else {
-        throw new TokenExpiredException(TOKEN_EXPIRED.getMessage());
+        throw new TokenExpiredException(TOKEN_EXPIRED.getMessage(), Instant.now());
       }
     } catch (TokenExpiredException e) {
       checkRefreshToken(user.getEmail(), refreshToken);
