@@ -20,4 +20,8 @@ public class ChatRequest {
 
   private String content;
 
+  @Override
+  public String toString() {
+    return "type : "+type+"\nsenderId : "+senderId+"\nchannelId : "+channelId+"\ncontent : "+content;
+  }
 }
