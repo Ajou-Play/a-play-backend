@@ -30,7 +30,6 @@ public class RedisSubscriber implements MessageListener {
     try{
       String publishedMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
       ChatResponse chatResponse = objectMapper.readValue(publishedMessage, ChatResponse.class);
-      System.out.println("type : "+chatResponse.getType()+"\nsenderName : "+chatResponse.getSender().getEmail()+"\nmessage : "+chatResponse.getContent());
       messagingTemplate.convertAndSend("/sub/chat/message/channel/" +chatResponse.getChannelId(), chatResponse);
     } catch (Exception e) {
       log.error(e.getMessage());
