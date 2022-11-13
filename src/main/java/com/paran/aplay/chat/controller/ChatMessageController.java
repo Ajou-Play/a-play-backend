@@ -13,6 +13,7 @@ public class ChatMessageController {
 
     @MessageMapping("/chat/message")
     public void message(ChatRequest request) {
+        System.out.println(request);
         chatService.sendMessage(request);
     }
 }
