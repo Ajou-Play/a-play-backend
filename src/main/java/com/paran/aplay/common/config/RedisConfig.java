@@ -22,7 +22,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Setter
 public class RedisConfig {
 
-  private static final String CHAT_TOPIC_NAME = "channel";
+  public static final String MEETING_TOPIC_NAME = "meeting";
+
+  public static final String CHAT_TOPIC_NAME = "channel";
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -33,12 +35,11 @@ public class RedisConfig {
   @Bean
   public RedisMessageListenerContainer redisMessageListenerContainer(
       RedisConnectionFactory connectionFactory,
-      MessageListenerAdapter listenerAdapter,
-      ChannelTopic channelTopic
+      MessageListenerAdapter listenerAdapter
   ){
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    container.addMessageListener(listenerAdapter, channelTopic);
+    container.addMessageListener(listenerAdapter, new ChannelTopic(CHAT_TOPIC_NAME));
     return container;
   }
 
@@ -54,11 +55,6 @@ public class RedisConfig {
   @Bean
   public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
     return new MessageListenerAdapter(subscriber, "onMessage");
-  }
-
-  @Bean
-  public ChannelTopic channelTopic() {
-    return new ChannelTopic(CHAT_TOPIC_NAME);
   }
 
 }

@@ -10,6 +10,7 @@ import com.paran.aplay.chat.domain.ChatMessage;
 import com.paran.aplay.chat.dto.ChatRequest;
 import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.chat.repository.ChatRepository;
+import com.paran.aplay.common.config.RedisConfig;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.common.util.RedisService;
 import com.paran.aplay.user.domain.User;
@@ -37,14 +38,14 @@ public class ChatService {
 
   private final ChatRepository chatRepository;
 
-  private final ChannelTopic channelTopic;
+  private final ChannelTopic chatTopic = new ChannelTopic(RedisConfig.CHAT_TOPIC_NAME);
 
   private final RedisService redisService;
   @Transactional
   public void sendMessage(ChatRequest request) {
     ChatMessage message = createChatMessage(request);
     ChatResponse response = ChatResponse.from(message);
-    redisService.publishChatMessage(channelTopic, response);
+    redisService.publishChatMessage(chatTopic, response);
   }
 
   @Transactional
