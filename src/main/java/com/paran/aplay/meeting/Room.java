@@ -1,4 +1,4 @@
-package com.paran.aplay.room;
+package com.paran.aplay.meeting;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.annotation.PreDestroy;
-import lombok.Getter;
 import org.kurento.client.Continuation;
 import org.kurento.client.MediaPipeline;
 import org.kurento.jsonrpc.JsonUtils;

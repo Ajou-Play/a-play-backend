@@ -1,4 +1,4 @@
-package com.paran.aplay.room;
+package com.paran.aplay.meeting;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,4 +1,4 @@
-package com.paran.aplay.room;
+package com.paran.aplay.meeting;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
