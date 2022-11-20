@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.projectlombok:lombok:1.18.24'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4'
+    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
@@ -51,6 +52,10 @@ dependencies {
 
     //socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //object-storage
+    implementation group: 'com.oracle.oci.sdk', name: 'oci-java-sdk-common', version: '2.28.0'
+    implementation group: 'com.oracle.oci.sdk', name: 'oci-java-sdk-objectstorage', version: '2.28.0'
 }
 
 jib {
