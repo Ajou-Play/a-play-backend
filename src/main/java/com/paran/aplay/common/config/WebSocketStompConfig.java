@@ -1,5 +1,6 @@
 package com.paran.aplay.common.config;
 
+import com.paran.aplay.common.SessionHandshakeHandler;
 import com.paran.aplay.meeting.RoomManager;
 import com.paran.aplay.user.domain.UserRegistry;
 import com.paran.aplay.user.service.UserUtilService;
@@ -43,6 +44,7 @@ public class WebSocketStompConfig implements WebSocketMessageBrokerConfigurer {
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint( "/api/socket/chat", "/api/socket/meeting").setAllowedOriginPatterns("*")
-        .withSockJS();
+            .setHandshakeHandler(new SessionHandshakeHandler())
+            .withSockJS();
   }
 }

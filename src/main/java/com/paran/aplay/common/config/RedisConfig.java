@@ -40,6 +40,7 @@ public class RedisConfig {
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
     container.addMessageListener(listenerAdapter, new ChannelTopic(CHAT_TOPIC_NAME));
+    container.addMessageListener(listenerAdapter, new ChannelTopic(MEETING_TOPIC_NAME));
     return container;
   }
 
