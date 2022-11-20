@@ -48,6 +48,10 @@ public class Room implements Closeable {
         this.close();
     }
 
+    public Long getRoomId() {
+        return this.roomId;
+    }
+
     public UserSession join(Participant participant, WebSocketSession session) throws IOException {
         log.info("ROOM {}: adding participant {}", this.roomId, participant.getUserId());
         final UserSession userSession = new UserSession(participant, this.roomId, session, this.pipeline);
