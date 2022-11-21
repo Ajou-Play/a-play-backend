@@ -42,8 +42,9 @@ public class MeetingController {
     }
 
     @MessageMapping("/leaveMeeting")
-    public void joinMeeting(JwtPrincipal principal, LeaveMeetingRequest request) {
-        log.info("INCOMING JOIN, user {}", principal.getUser().getId());
+    public void leaveMeeting(JwtPrincipal principal, LeaveMeetingRequest request) {
+        log.info("INCOMING leaveMeeting, user {}", principal.getUser().getId());
+        webRtcService.leave(principal.getUser());
     }
 
 }

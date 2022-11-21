@@ -6,13 +6,13 @@ import com.paran.aplay.meeting.dto.response.ExistingUsersResponse;
 import com.paran.aplay.meeting.dto.response.IceCandidateResponse;
 import com.paran.aplay.meeting.dto.response.NewUserArrivedResponse;
 import com.paran.aplay.meeting.dto.response.ReceiveVideoAnswerResponse;
+import com.paran.aplay.meeting.dto.response.UserLeftResponse;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.dto.Participant;
 import com.paran.aplay.user.service.UserUtilService;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.kurento.client.IceCandidate;
 import org.kurento.client.WebRtcEndpoint;
@@ -108,8 +108,30 @@ public class WebRtcService {
         incomingEndpoint.gatherCandidates();
     }
 
-    public void leave(Long userId) {
+    public void leave(User user) {
+        Long userId = user.getId();
+        final Optional<Long> roomIdResult = roomUserService.findRoomIdByUserId(userId);
+        if (roomIdResult.isEmpty()) return;
+        Long roomId = roomIdResult.get();
 
+        roomUserService.delete(roomId, userId);
+
+        final List<User> roomUsers = roomUserService.findAllByRoomId(roomId);
+        roomUsers.forEach(roomUser -> {
+            kurentoRoomService.removeIncomingEndpoint(roomUser.getId(), userId);
+
+            stompMessagingService.sendToUser(
+                    roomUser.getId(),
+                    EventType.userLeft,
+                    new UserLeftResponse(EventType.userLeft, Participant.from(user))
+            );
+        });
+
+        if (roomUsers.isEmpty()) {
+            kurentoRoomService.removeRoomMediaPipeline(roomId);
+        }
+        kurentoRoomService.removeIncomingEndpoint(userId);
+        kurentoRoomService.removeOutgoingEndpoint(userId);
     }
 
     public void iceCandidate(
@@ -117,7 +139,7 @@ public class WebRtcService {
             Long senderId,
             Candidate candidate
     ) {
-        if (userId == senderId) {
+        if (Objects.equals(userId, senderId)) {
             kurentoRoomService.addIceCandidateToOutgoingEndpoint(userId, candidate);
         } else {
             kurentoRoomService.addIceCandidateToIncomingEndpoint(userId, senderId, candidate);
