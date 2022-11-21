@@ -26,12 +26,14 @@ public class MeetingController {
 
     @MessageMapping("/onIceCandidate")
     public void onIceCandidate(JwtPrincipal principal, OnIceCandidateRequest request) {
-        log.info("INCOMING JOIN, user {}", principal.getUser().getId());
+        log.info("INCOMING onIceCandidate, user {}", principal.getUser().getId());
+
     }
 
     @MessageMapping("/receiveVideoFrom")
     public void receiveVideoFrom(JwtPrincipal principal, ReceiveVideoFromRequest request) {
-        log.info("INCOMING JOIN, user {}", principal.getUser().getId());
+        log.info("INCOMING receiveVideoFrom, user {}", principal.getUser().getId());
+        webRtcService.offer(principal.getUser().getId(), request.getUserId(), request.getSdpOffer());
     }
 
     @MessageMapping("/leaveMeeting")
