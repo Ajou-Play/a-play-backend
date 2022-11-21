@@ -69,7 +69,7 @@ jib {
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
         ports=['8080']
-        jvmFlags=["-Dspring.profiles.active=dev", "-Dkms.url=ws://kms-service.aplay.svc.cluster.local:8888/kurento"]
+        jvmFlags=["-Dspring.profiles.active=dev", "-Dkms.url=ws://kms-service.aplay.svc.cluster.local:8888"]
     }
 }
 
