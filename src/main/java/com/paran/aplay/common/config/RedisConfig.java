@@ -1,6 +1,6 @@
 package com.paran.aplay.common.config;
 
-import com.paran.aplay.common.listener.RedisSubscriber;
+import com.paran.aplay.common.listener.ChatSubscriber;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -56,12 +56,12 @@ public class RedisConfig {
   }
 
   @Bean("chatMessageListener")
-  public MessageListenerAdapter chatListenerAdapter(RedisSubscriber subscriber) {
-    return new MessageListenerAdapter(subscriber, "onChatMessage");
+  public MessageListenerAdapter chatListenerAdapter(ChatSubscriber subscriber) {
+    return new MessageListenerAdapter(subscriber, "onMessage");
   }
 
   @Bean("meetingListener")
-  public MessageListenerAdapter meetingListenerAdapter(RedisSubscriber subscriber) {
+  public MessageListenerAdapter meetingListenerAdapter(ChatSubscriber subscriber) {
     return new MessageListenerAdapter(subscriber, "onMeetingMessage");
   }
 
