@@ -1,6 +1,7 @@
 package com.paran.aplay.meeting;
 
 import com.paran.aplay.jwt.JwtPrincipal;
+import com.paran.aplay.meeting.dto.Candidate;
 import com.paran.aplay.meeting.dto.request.JoinMeetingRequest;
 import com.paran.aplay.meeting.dto.request.LeaveMeetingRequest;
 import com.paran.aplay.meeting.dto.request.OnIceCandidateRequest;
@@ -27,7 +28,11 @@ public class MeetingController {
     @MessageMapping("/onIceCandidate")
     public void onIceCandidate(JwtPrincipal principal, OnIceCandidateRequest request) {
         log.info("INCOMING onIceCandidate, user {}", principal.getUser().getId());
-
+        webRtcService.iceCandidate(
+                principal.getUser().getId(),
+                request.getUserId(),
+                request.getCandidate()
+        );
     }
 
     @MessageMapping("/receiveVideoFrom")
