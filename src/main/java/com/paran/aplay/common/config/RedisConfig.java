@@ -1,10 +1,11 @@
 package com.paran.aplay.common.config;
 
-import com.paran.aplay.common.util.RedisSubscriber;
+import com.paran.aplay.common.listener.RedisSubscriber;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Setter
 public class RedisConfig {
 
-  private static final String CHAT_TOPIC_NAME = "channel";
+  public static final String MEETING_TOPIC_NAME = "meeting";
+
+  public static final String CHAT_TOPIC_NAME = "channel";
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -33,12 +36,13 @@ public class RedisConfig {
   @Bean
   public RedisMessageListenerContainer redisMessageListenerContainer(
       RedisConnectionFactory connectionFactory,
-      MessageListenerAdapter listenerAdapter,
-      ChannelTopic channelTopic
+      @Qualifier("chatMessageListener") MessageListenerAdapter chatListenerAdapter,
+      @Qualifier("meetingListener") MessageListenerAdapter meetingListenerAdapter
   ){
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    container.addMessageListener(listenerAdapter, channelTopic);
+    container.addMessageListener(chatListenerAdapter, new ChannelTopic(CHAT_TOPIC_NAME));
+    container.addMessageListener(meetingListenerAdapter, new ChannelTopic(MEETING_TOPIC_NAME));
     return container;
   }
 
@@ -51,14 +55,14 @@ public class RedisConfig {
     return redisTemplate;
   }
 
-  @Bean
-  public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
-    return new MessageListenerAdapter(subscriber, "onMessage");
+  @Bean("chatMessageListener")
+  public MessageListenerAdapter chatListenerAdapter(RedisSubscriber subscriber) {
+    return new MessageListenerAdapter(subscriber, "onChatMessage");
   }
 
-  @Bean
-  public ChannelTopic channelTopic() {
-    return new ChannelTopic(CHAT_TOPIC_NAME);
+  @Bean("meetingListener")
+  public MessageListenerAdapter meetingListenerAdapter(RedisSubscriber subscriber) {
+    return new MessageListenerAdapter(subscriber, "onMeetingMessage");
   }
 
 }

@@ -51,6 +51,11 @@ dependencies {
 
     //socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    //kurento-client
+    implementation 'org.kurento:kurento-client:6.18.0'
+
+    implementation group: 'org.springframework', name: 'spring-messaging', version: '5.3.6'
 }
 
 jib {
