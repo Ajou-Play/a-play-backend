@@ -1,6 +1,6 @@
 package com.paran.aplay.common.config;
 
-import com.paran.aplay.common.util.RedisSubscriber;
+import com.paran.aplay.common.listener.RedisSubscriber;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
