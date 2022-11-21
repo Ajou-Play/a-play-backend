@@ -1,50 +1,56 @@
 package com.paran.aplay.common.config;
 
-import com.paran.aplay.common.SessionHandshakeHandler;
-import com.paran.aplay.meeting.RoomManager;
-import com.paran.aplay.user.domain.UserRegistry;
-import com.paran.aplay.user.service.UserUtilService;
+import com.paran.aplay.common.interceptor.ClientInboundChannelInterceptor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kurento.client.KurentoClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketStompConfig implements WebSocketMessageBrokerConfigurer {
 
-  private final UserUtilService utilService;
+    private final ClientInboundChannelInterceptor clientInboundChannelInterceptor;
 
-  @Bean
-  public UserRegistry registry() {
-    return new UserRegistry();
-  }
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/sub"); // 메세지 구독 요청
+        config.setApplicationDestinationPrefixes("/pub"); // 메세지 발행 요청
+    }
 
-  @Bean
-  public RoomManager roomManager() {
-    return new RoomManager();
-  }
+    @Override
+    public final void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(clientInboundChannelInterceptor);
+    }
 
-  @Bean
-  public KurentoClient kurentoClient() {
-    return KurentoClient.create();
-  }
+    @Override
+    public final void configureClientOutboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new ChannelInterceptor() {
+            @Override
+            public Message<?> preSend(final Message<?> message, final MessageChannel channel) {
+                final StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+                log.info("OUTGOING {}", accessor.getDetailedLogMessage(message.getPayload()));
+                return message;
+            }
+        });
+    }
 
-  @Override
-  public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/sub"); // 메세지 구독 요청
-    config.setApplicationDestinationPrefixes("/pub"); // 메세지 발행 요청
-  }
-
-  @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint( "/api/socket/chat", "/api/socket/meeting").setAllowedOriginPatterns("*")
-            .setHandshakeHandler(new SessionHandshakeHandler())
-            .withSockJS();
-  }
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/api/socket/chat", "/api/socket/meeting").setAllowedOriginPatterns("*")
+                .withSockJS();
+    }
 }

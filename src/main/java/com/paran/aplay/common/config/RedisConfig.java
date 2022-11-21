@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,12 +36,13 @@ public class RedisConfig {
   @Bean
   public RedisMessageListenerContainer redisMessageListenerContainer(
       RedisConnectionFactory connectionFactory,
-      MessageListenerAdapter listenerAdapter
+      @Qualifier("chatMessageListener") MessageListenerAdapter chatListenerAdapter,
+      @Qualifier("meetingListener") MessageListenerAdapter meetingListenerAdapter
   ){
     RedisMessageListenerContainer container = new RedisMessageListenerContainer();
     container.setConnectionFactory(connectionFactory);
-    container.addMessageListener(listenerAdapter, new ChannelTopic(CHAT_TOPIC_NAME));
-    container.addMessageListener(listenerAdapter, new ChannelTopic(MEETING_TOPIC_NAME));
+    container.addMessageListener(chatListenerAdapter, new ChannelTopic(CHAT_TOPIC_NAME));
+    container.addMessageListener(meetingListenerAdapter, new ChannelTopic(MEETING_TOPIC_NAME));
     return container;
   }
 
@@ -53,9 +55,14 @@ public class RedisConfig {
     return redisTemplate;
   }
 
-  @Bean
-  public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
-    return new MessageListenerAdapter(subscriber, "onMessage");
+  @Bean("chatMessageListener")
+  public MessageListenerAdapter chatListenerAdapter(RedisSubscriber subscriber) {
+    return new MessageListenerAdapter(subscriber, "onChatMessage");
+  }
+
+  @Bean("meetingListener")
+  public MessageListenerAdapter meetingListenerAdapter(RedisSubscriber subscriber) {
+    return new MessageListenerAdapter(subscriber, "onMeetingMessage");
   }
 
 }

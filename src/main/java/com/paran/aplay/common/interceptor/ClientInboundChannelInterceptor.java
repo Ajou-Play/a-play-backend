@@ -1,13 +1,11 @@
 package com.paran.aplay.common.interceptor;
 
-import com.paran.aplay.common.ClientOutboundChannelService;
 import com.paran.aplay.jwt.JwtPrincipal;
 import com.paran.aplay.jwt.JwtService;
 import com.paran.aplay.jwt.claims.AccessClaim;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.service.UserUtilService;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -27,7 +25,6 @@ public class ClientInboundChannelInterceptor implements ChannelInterceptor {
 
     private final JwtService jwtService;
 
-    private final ClientOutboundChannelService clientOutboundChannelService;
 
     @Override
     public Message<?> preSend(Message<?> message, final MessageChannel channel) {
@@ -35,20 +32,20 @@ public class ClientInboundChannelInterceptor implements ChannelInterceptor {
 
         if (Objects.nonNull(accessor)) {
             log.info("INCOMING {}", accessor.getDetailedLogMessage(message.getPayload()));
-
             if (StompCommand.CONNECT.equals(accessor.getCommand())) {
                 message = this.connect(message, accessor);
             }
         }
-
         return message;
     }
 
     private Message<?> connect(Message<?> message, final StompHeaderAccessor accessor) {
+
         final String accessToken = accessor.getFirstNativeHeader("accessToken");
         AccessClaim claim = jwtService.verifyAccessToken(accessToken);
         User user = userUtilService.getUserById(claim.getUserId());
         accessor.setUser(new JwtPrincipal(accessToken, user));
+
         return message;
     }
 }

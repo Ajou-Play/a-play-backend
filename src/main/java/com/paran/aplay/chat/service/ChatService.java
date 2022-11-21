@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatService {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
-  private final ObjectMapper objectMapper;
 
   private final UserUtilService userUtilService;
 
