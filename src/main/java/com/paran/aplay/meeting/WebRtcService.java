@@ -38,6 +38,7 @@ public class WebRtcService {
             kurentoRoomService.removeIncomingEndpoint(user.getId());
             kurentoRoomService.removeOutgoingEndpoint(user.getId());
         }
+        else {roomUserService.add(roomId, user);}
         kurentoRoomService.createOutgoingEndpoint(
                 roomId,
                 user.getId(),
@@ -60,7 +61,6 @@ public class WebRtcService {
                         .user(Participant.from(user))
         ));
         final List<Participant> participants = roomUsers.stream().map(Participant::from).toList();
-        if (roomUserResult.isEmpty()) roomUserService.add(roomId, user);
         stompMessagingService.sendToUser(user.getId(), EventType.existingUsers,
                 ExistingUsersResponse.builder()
                         .eventType(EventType.existingUsers)
