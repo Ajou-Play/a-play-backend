@@ -30,6 +30,7 @@ public class WebRtcService {
 
     private final StompMessagingService stompMessagingService;
 
+    // reubild
     public void join(User user, Long roomId) {
         final List<User> roomUsers = roomUserService.findAllByRoomId(roomId);
         final Optional<User> roomUserResult = roomUserService.findById(roomId, user.getId());
