@@ -4,7 +4,9 @@ import static com.paran.aplay.common.ErrorCode.*;
 
 import com.paran.aplay.common.error.exception.AlreadyExistsException;
 import com.paran.aplay.common.error.exception.NotFoundException;
+import com.paran.aplay.common.error.exception.PermissionDeniedException;
 import com.paran.aplay.team.domain.Team;
+import com.paran.aplay.team.dto.response.TeamDetailResponse;
 import com.paran.aplay.team.repository.TeamRepository;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.domain.UserTeam;
@@ -14,6 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,6 +34,28 @@ public class TeamService {
   @Transactional(readOnly = true)
   public Team getTeamById(Long teamId) {
     return teamRepository.findById(teamId).orElseThrow(() -> new NotFoundException(TEAM_NOT_FOUND));
+  }
+
+  @Transactional(readOnly = true)
+  public List<Team> getAllTeamByUser(User user) {
+    return userUtilService.getUserTeamsByUser(user)
+            .stream().map(userTeam -> userTeam.getTeam())
+            .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public TeamDetailResponse getTeamDetailById(User user, Long teamId) {
+    Team team = getTeamById(teamId);
+    boolean isExist = userUtilService.checkUserExistsInTeam(user, team);
+    if(!isExist){
+      throw new PermissionDeniedException(USER_NOT_ALLOWED);
+    }
+
+    List<User> members = userUtilService.getUserTeamsByTeam(team)
+             .stream().map(userTeam -> userTeam.getUser())
+             .collect(Collectors.toList());
+
+    return TeamDetailResponse.from(team, members);
   }
 
   @Transactional
