@@ -71,6 +71,16 @@ jib {
         ports=['8080']
         jvmFlags=["-Dspring.profiles.active=dev"]
     }
+    extraDirectories {
+        paths {
+            path {
+                // copies the contents of 'src/main/another/dir' into '/extras' on the container
+                from = file('~/ocikey')
+                into = '~/ocikey'
+            }
+        }
+    }
+
 }
 
 static def getPrefix() {

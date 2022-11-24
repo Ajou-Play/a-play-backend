@@ -2,7 +2,7 @@ name: Docker Image Build & Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feat*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -45,6 +45,18 @@ jobs:
       - 
         name: Log Secrets
         run: cat src/main/resources/application-local.yml | grep url
+
+      - name: Clone OCI
+        run: git clone https://github.com/Ajou-Play/oci-secrets.git
+
+      - name: MKDIR OCI
+        run: mkdir -p ~/ocikey
+
+      - name: Move OCI
+        run: mv oci-secrets/* ~/ocikey/*
+
+      - name: Log OCI
+        run: cat ~/ocikey/config
 
       -
         name: Login to Docker Hub

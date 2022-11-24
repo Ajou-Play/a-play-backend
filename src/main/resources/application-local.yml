@@ -19,4 +19,4 @@ spring:
   oci:
     tenency-id: ocid1.tenancy.oc1..aaaaaaaargp22klg5phmjp6cdqep3s6vijfv3dlicqhcgkqyf5qsakr7equa
     bucket-name: aplay
-    private-key: ~/ocikey/config
+    configUrl: ~/ocikey/config

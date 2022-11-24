@@ -1,4 +1,4 @@
-package com.paran.aplay.common.config;
+package com.paran.aplay.common.config.property;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "spring.oci")
 @Getter
 @Setter
-public class OciConfig {
-    private String tenecyId;
+public class OciConfigProperties {
+    private String tenencyId;
+    private String bucketName;
+    private String configUrl;
 }
