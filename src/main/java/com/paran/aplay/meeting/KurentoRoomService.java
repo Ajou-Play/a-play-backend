@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KurentoRoomService {
 
+    private final static String STUN_ADDRESS = "stun:stun.l.google.com";
+    private final static int STUN_PORT = 19302;
+
     private final KurentoClient kurentoClient;
 
     // roomId, MediaPipeline
@@ -38,6 +41,8 @@ public class KurentoRoomService {
 
         log.info("Create [OUTGOING_ENDPOINT] for identifier [{}]", userId);
         final WebRtcEndpoint outgoingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).build();
+        outgoingEndpoint.setStunServerAddress(STUN_ADDRESS);
+        outgoingEndpoint.setStunServerPort(STUN_PORT);
         outgoingEndpoint.addIceCandidateFoundListener(listener);
         outgoingEndpoints.put(userId, outgoingEndpoint);
     }
@@ -65,6 +70,8 @@ public class KurentoRoomService {
 
         log.info("Create [INCOMING_ENDPOINT] for identifier [{}]", userId + "-" + senderId);
         final WebRtcEndpoint incomingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).build();
+        incomingEndpoint.setStunServerAddress(STUN_ADDRESS);
+        incomingEndpoint.setStunServerPort(STUN_PORT);
         incomingEndpoint.addIceCandidateFoundListener(listener);
 
         this.incomingEndpoints.get(userId).put(senderId, incomingEndpoint);
