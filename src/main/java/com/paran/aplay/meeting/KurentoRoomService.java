@@ -19,9 +19,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KurentoRoomService {
 
-    private final static String STUN_ADDRESS = "stun:stun.l.google.com";
-    private final static int STUN_PORT = 19302;
-
     private final KurentoClient kurentoClient;
 
     // roomId, MediaPipeline
