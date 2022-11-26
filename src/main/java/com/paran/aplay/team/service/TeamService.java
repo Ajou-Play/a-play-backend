@@ -7,6 +7,7 @@ import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.common.error.exception.PermissionDeniedException;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.dto.response.TeamDetailResponse;
+import com.paran.aplay.team.dto.response.TeamResponse;
 import com.paran.aplay.team.repository.TeamRepository;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.domain.UserTeam;
@@ -37,9 +38,10 @@ public class TeamService {
   }
 
   @Transactional(readOnly = true)
-  public List<Team> getAllTeamByUser(User user) {
+  public List<TeamResponse> getAllTeamByUser(User user) {
     return userUtilService.getUserTeamsByUser(user)
             .stream().map(userTeam -> userTeam.getTeam())
+            .map(TeamResponse::from)
             .collect(Collectors.toList());
   }
 

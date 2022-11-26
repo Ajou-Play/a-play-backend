@@ -14,6 +14,7 @@ import com.paran.aplay.team.dto.response.TeamResponse;
 import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,8 @@ public class TeamController {
   private final ChannelService channelService;
 
   @GetMapping
-  public ResponseEntity<ApiResponse<List<Team>>> getUserTeams(@CurrentUser User user) {
-    List<Team> res = teamService.getAllTeamByUser(user);
+  public ResponseEntity<ApiResponse<List<TeamResponse>>> getUserTeams(@CurrentUser User user) {
+    List<TeamResponse> res = teamService.getAllTeamByUser(user);
     ApiResponse apiResponse = ApiResponse.builder()
             .message("유저가 속한 팀 조회에 성공하였습니다.")
             .status(OK.value())
