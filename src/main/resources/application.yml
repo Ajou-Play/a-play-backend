@@ -15,7 +15,7 @@ spring:
     issuer: aplay
     accessToken:
       header: accessToken
-      expiry-seconds: 180000
+      expiry-seconds: 1800
     refreshToken:
       header: refreshToken
       expiry-seconds: 604800
