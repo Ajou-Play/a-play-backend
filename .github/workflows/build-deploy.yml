@@ -53,7 +53,7 @@ jobs:
         run: mkdir -p ~/ocikey
 
       - name: Move OCI
-        run: mv oci-secrets/* ~/ocikey/*
+        run: mv oci-secrets/* ~/ocikey/
 
       - name: Log OCI
         run: cat ~/ocikey/config
