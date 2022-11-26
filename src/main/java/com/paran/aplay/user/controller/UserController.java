@@ -3,15 +3,18 @@ package com.paran.aplay.user.controller;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+
 import com.paran.aplay.common.ApiResponse;
 import com.paran.aplay.jwt.JwtAuthenticationToken;
 import com.paran.aplay.jwt.JwtPrincipal;
 import com.paran.aplay.jwt.JwtService;
 import com.paran.aplay.user.domain.User;
+import com.paran.aplay.user.dto.request.TokenReissueRequest;
 import com.paran.aplay.user.dto.request.UserSignInRequest;
 import com.paran.aplay.user.dto.request.UserSignUpRequest;
 import com.paran.aplay.user.dto.response.SignInResponse;
 import com.paran.aplay.user.dto.response.SignUpResponse;
+import com.paran.aplay.user.dto.response.TokenResponse;
 import com.paran.aplay.user.service.UserService;
 import com.paran.aplay.user.service.UserUtilService;
 import java.net.URI;
@@ -74,4 +77,18 @@ public class UserController {
         .build();
     return ResponseEntity.created(URI.create("/signup")).body(response);
   }
+  @PostMapping("/token/reissue")
+  public ResponseEntity<ApiResponse<SignInResponse>> reissueAccessToken(@RequestBody @Valid
+                                                                        TokenReissueRequest request) {
+    User user = userUtilService.getUserById(request.getUserId());
+    String newAccessToken = jwtService.reissueAccessToken(user, request.getAccessToken(),
+            request.getRefreshToken());
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("토큰이 재발급되었습니다.")
+            .status(OK.value())
+            .data(new TokenResponse(newAccessToken))
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
 }

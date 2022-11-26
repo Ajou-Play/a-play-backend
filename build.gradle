@@ -53,9 +53,16 @@ dependencies {
     //socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+<<<<<<< HEAD:build.gradle.backup
     //object-storage
     implementation group: 'com.oracle.oci.sdk', name: 'oci-java-sdk-common', version: '2.28.0'
     implementation group: 'com.oracle.oci.sdk', name: 'oci-java-sdk-objectstorage', version: '2.28.0'
+=======
+    //kurento-client
+    implementation 'org.kurento:kurento-client:6.18.0'
+
+    implementation group: 'org.springframework', name: 'spring-messaging', version: '5.3.6'
+>>>>>>> main:build.gradle
 }
 
 jib {
@@ -69,7 +76,7 @@ jib {
     container {
         creationTime = "USE_CURRENT_TIMESTAMP"
         ports=['8080']
-        jvmFlags=["-Dspring.profiles.active=dev"]
+        jvmFlags=["-Dspring.profiles.active=dev", "-Dkms.url=ws://kms-service.aplay.svc.cluster.local:8888/kurento"]
     }
     extraDirectories {
         paths {

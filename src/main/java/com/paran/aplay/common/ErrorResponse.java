@@ -12,7 +12,7 @@ public class ErrorResponse {
   private String code;
   private String message;
 
-  private ErrorResponse(int status, String code, String message) {
+  public ErrorResponse(int status, String code, String message) {
     this.status = status;
     this.code = code;
     this.message = message;
