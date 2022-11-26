@@ -81,7 +81,7 @@ jib {
             path {
                 // copies the contents of 'src/main/another/dir' into '/extras' on the container
                 from = file('oci-secrets')
-                into = '/ocikey'
+                into = '$HOME/ocikey'
             }
         }
     }
