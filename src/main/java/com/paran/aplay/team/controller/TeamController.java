@@ -61,6 +61,16 @@ public class TeamController {
     return ResponseEntity.ok(apiResponse);
   }
 
+  @DeleteMapping("/{teamId}")
+  public ResponseEntity<ApiResponse> removeTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    Boolean res = teamService.deleteTeam(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀 삭제 성공하였습니다.")
+            .status(OK.value())
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
   @GetMapping("/{teamId}/channels")
   public ResponseEntity<ApiResponse<List<ChannelResponse>>> getAllChannelsByTeam(@PathVariable("teamId") Long teamId) {
     Team team = teamService.getTeamById(teamId);
