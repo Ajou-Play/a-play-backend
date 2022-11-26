@@ -46,6 +46,13 @@ public class UserUtilService {
     return userTeamRepository.existsByUserIdAndTeamId(user.getId(), team.getId());
   }
 
+  @Transactional()
+  public void deleteUserFromTeam(User user, Team team) {
+    UserTeam userTeam = userTeamRepository.findByUserIdAndTeamId(user.getId(), team.getId());
+    userTeamRepository.delete(userTeam);
+    return;
+  }
+
   @Transactional(readOnly = true)
   public List<UserTeam> getUserTeamsByTeam(Team team) {
     return userTeamRepository.findAllByTeamId(team.getId());

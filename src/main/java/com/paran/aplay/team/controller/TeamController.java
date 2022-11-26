@@ -19,12 +19,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -52,6 +47,16 @@ public class TeamController {
             .message("팀에 해당하는 상세한 정보 조회에 성공하였습니다.")
             .status(OK.value())
             .data(res)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @PatchMapping("/{teamId}")
+  public ResponseEntity<ApiResponse> leaveUserFromTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    Boolean res = teamService.deleteUserFromTeam(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀 탈퇴 성공하였습니다.")
+            .status(OK.value())
             .build();
     return ResponseEntity.ok(apiResponse);
   }

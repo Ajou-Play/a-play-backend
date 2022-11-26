@@ -61,6 +61,20 @@ public class TeamService {
   }
 
   @Transactional
+  public Boolean deleteUserFromTeam(User user, Long teamId) {
+    Team team = getTeamById(teamId);
+    boolean isExist = userUtilService.checkUserExistsInTeam(user, team);
+    if(!isExist){
+      throw new PermissionDeniedException(USER_NOT_ALLOWED);
+    }
+    userUtilService.deleteUserFromTeam(user, team);
+    isExist = userUtilService.checkUserExistsInTeam(user, team);
+
+    return isExist;
+  }
+
+
+  @Transactional
   public Team createTeam(String name) {
     Team team = new Team(name);
     return teamRepository.save(team);
