@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.paran.aplay.common.util.OciObjectStorageUtil;
+import com.paran.aplay.team.service.TeamService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,8 @@ import org.hibernate.annotations.CascadeType;
 @Getter
 public class Team extends BaseEntity {
 
+  public static final String DEFAULT_PROFILE_IMAGE_URL =
+          OciObjectStorageUtil.OBJECT_STORAGE_SERVER_URL + OciObjectStorageUtil.TEAM_PROFILE_IMAGE_PREFIX + "default.png";
   private static final int MAX_PROFILEIMAGE_LENGTH = 300;
 
   private static final int MAX_NAME_LENGTH = 100;
@@ -37,10 +42,19 @@ public class Team extends BaseEntity {
   @Column(length = MAX_PROFILEIMAGE_LENGTH)
   private String profileImage;
 
+  public void updateName(String name) {
+    this.name = name;
+  }
+
+  public void updateProfileImage(String profileImage) {
+    this.profileImage = profileImage;
+  }
+
   public Team(String name) {
     if(!hasText(name)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
     this.name = name;
+    this.profileImage = DEFAULT_PROFILE_IMAGE_URL;
   }
 }
