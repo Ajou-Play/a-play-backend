@@ -16,8 +16,11 @@ import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
+
+import com.paran.aplay.user.service.UserUtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class TeamController {
   private final TeamService teamService;
   private final ChannelService channelService;
+
+  private final UserUtilService userUtilService;
 
   @GetMapping
   public ResponseEntity<ApiResponse<List<TeamResponse>>> getUserTeams(@CurrentUser User user) {
@@ -108,15 +113,30 @@ public class TeamController {
 
 
   @PostMapping
-  public ResponseEntity<ApiResponse<TeamResponse>> createTeam(@CurrentUser User user, @RequestBody @Valid TeamCreateRequest request) {
-    Team newTeam = teamService.createTeam(request.getName());
+  public ResponseEntity<ApiResponse<TeamDetailResponse>> createTeam(
+          @CurrentUser User user,
+          @RequestPart("data") @Valid TeamCreateRequest request,
+          @RequestPart(value = "profileImage", required = false) MultipartFile image
+  ) {
+
+    Team newTeam = teamService.createTeam(request, image);
     teamService.inviteUserToTeam(user, newTeam);
     Channel generalChannel = channelService.createChannel(Channel.defaultName, newTeam);
     channelService.inviteUserToChannel(user, generalChannel);
+    Arrays.stream(request.getMembers()).forEach(t_user_email -> {
+      try {
+        User t_user = userUtilService.getUserByEmail(t_user_email);
+        teamService.inviteUserToTeam(t_user, newTeam);
+        channelService.inviteUserToChannel(t_user, generalChannel);
+      } catch (Exception e) {}
+    });
+
+    TeamDetailResponse res = teamService.getTeamDetailById(user, newTeam.getId());
+
     ApiResponse apiResponse = ApiResponse.builder()
         .message("팀 생성에 성공했습니다.")
         .status(CREATED.value())
-        .data(TeamResponse.from(newTeam))
+        .data(res)
         .build();
     return ResponseEntity.created(URI.create("/")).body(apiResponse);
   }

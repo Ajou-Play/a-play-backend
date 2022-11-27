@@ -32,6 +32,11 @@ public class UserUtilService {
   }
 
   @Transactional(readOnly = true)
+  public User getUserByEmail(String email) {
+    return userRepository.findByEmailAndIsQuit(email, false).orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
+  }
+
+  @Transactional(readOnly = true)
   public boolean checkEmailUnique(String email) {
     return !userRepository.existsByEmailAndIsQuit(email, false);
   }

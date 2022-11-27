@@ -15,6 +15,8 @@ public class TeamDetailResponse {
     private final String name;
     private final List<TeamDetailUser> members;
     private final String profileImage;
+    private final String description;
+    private final Boolean isPublic;
 
     public static TeamDetailResponse from(Team team, List<User> members) {
         return TeamDetailResponse.builder()
@@ -22,6 +24,8 @@ public class TeamDetailResponse {
                 .name(team.getName())
                 .members(TeamDetailUser.from(members))
                 .profileImage(team.getProfileImage())
+                .description(team.getDescription())
+                .isPublic(team.getIsPublic())
                 .build();
     }
 

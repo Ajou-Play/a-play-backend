@@ -8,6 +8,7 @@ import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.common.error.exception.PermissionDeniedException;
 import com.paran.aplay.common.util.OciObjectStorageUtil;
 import com.paran.aplay.team.domain.Team;
+import com.paran.aplay.team.dto.request.TeamCreateRequest;
 import com.paran.aplay.team.dto.request.TeamUpdateRequest;
 import com.paran.aplay.team.dto.response.TeamDetailResponse;
 import com.paran.aplay.team.dto.response.TeamResponse;
@@ -102,9 +103,13 @@ public class TeamService {
   }
 
   @Transactional
-  public Team createTeam(String name) {
-    Team team = new Team(name);
-    return teamRepository.save(team);
+  public Team createTeam(TeamCreateRequest request, MultipartFile image) {
+    Team team = new Team(request);
+    team = teamRepository.save(team);
+    if (updateTeamProfileImage(team, image)) {
+      team = teamRepository.save(team);
+    }
+    return team;
   }
 
   @Transactional
@@ -126,31 +131,48 @@ public class TeamService {
       isUpdated = true;
     }
     if (image != null) {
-      var tmp = image.getOriginalFilename().split("\\.");
-      if(tmp.length < 1) {
-        throw new InvalidRequestException(INVALID_LENGTH);
-      }
-
-      var fileType = tmp[tmp.length-1];
-      if(!(fileType.equals("png") || fileType.equals("jpg") || fileType.equals("jpeg"))) {
-        throw new InvalidRequestException(INVALID_FILE_EXTENSION);
-      }
-
-      try {
-        String url = OciObjectStorageUtil.TEAM_PROFILE_IMAGE_PREFIX + team.getId().toString() + "." + fileType;
-        objectStorageUtil.postObject(url, image.getInputStream());
-        team.updateProfileImage(OciObjectStorageUtil.OBJECT_STORAGE_SERVER_URL + url);
-        isUpdated = true;
-      }
-      catch (Exception e){
-        System.err.println("팀 프로필 이미지 업데이트 오류.");
-        System.err.println(e.getCause());
-      }
+      isUpdated = updateTeamProfileImage(team, image) || isUpdated;
     }
 
     if(isUpdated)
       teamRepository.save(team);
+  }
 
+  private boolean updateTeamProfileImage(Team team, MultipartFile image){
+    if(image == null)
+      return false;
+
+    var tmp = image.getOriginalFilename().split("\\.");
+    if(tmp.length < 1) {
+      throw new InvalidRequestException(INVALID_LENGTH);
+    }
+
+    var fileType = tmp[tmp.length-1];
+    if(!(fileType.equals("png") || fileType.equals("jpg") || fileType.equals("jpeg"))) {
+      throw new InvalidRequestException(INVALID_FILE_EXTENSION);
+    }
+
+    if(updateTeamProfileImageFile(team.getId(), fileType, image)){
+      String url = OciObjectStorageUtil.TEAM_PROFILE_IMAGE_PREFIX + team.getId() + "." + fileType;
+      team.updateProfileImage(OciObjectStorageUtil.OBJECT_STORAGE_SERVER_URL + url);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean updateTeamProfileImageFile(Long teamId, String fileType, MultipartFile image) {
+    boolean res = false;
+
+    try {
+      String url = OciObjectStorageUtil.TEAM_PROFILE_IMAGE_PREFIX + teamId.toString() + "." + fileType;
+      objectStorageUtil.postObject(url, image.getInputStream());
+      res = true;
+    }
+    catch (Exception e){
+      System.err.println("팀 프로필 이미지 업데이트 오류.");
+      System.err.println(e.getCause());
+    }
+    return res;
   }
 
 }
