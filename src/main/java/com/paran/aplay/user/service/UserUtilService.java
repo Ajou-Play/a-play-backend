@@ -6,6 +6,7 @@ import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.user.domain.User;
+import com.paran.aplay.user.domain.UserChannel;
 import com.paran.aplay.user.domain.UserTeam;
 import com.paran.aplay.user.repository.UserChannelRepository;
 import com.paran.aplay.user.repository.UserRepository;
@@ -61,5 +62,10 @@ public class UserUtilService {
   @Transactional(readOnly = true)
   public List<UserTeam> getUserTeamsByUser(User user) {
     return userTeamRepository.findAllByUserId(user.getId());
+  }
+
+  @Transactional(readOnly = true)
+  public List<UserChannel> getUserChannelsByChannel(Channel channel) {
+    return userChannelRepository.findAllByChannelId(channel.getId());
   }
 }

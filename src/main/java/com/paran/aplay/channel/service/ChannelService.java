@@ -3,6 +3,7 @@ package com.paran.aplay.channel.service;
 import static com.paran.aplay.common.ErrorCode.*;
 
 import com.paran.aplay.channel.domain.Channel;
+import com.paran.aplay.channel.dto.response.ChannelDetailResponse;
 import com.paran.aplay.channel.repository.ChannelRepository;
 import com.paran.aplay.common.error.exception.AlreadyExistsException;
 import com.paran.aplay.common.error.exception.NotFoundException;
@@ -32,6 +33,8 @@ public class ChannelService {
 
   private final UserUtilService userUtilService;
 
+  private final ChannelUtilService channelUtilService;
+
   @Transactional(readOnly = true)
   public List<Channel> getAllChannelsByTeam(Team team) {
     return channelRepository.findByTeamId(team.getId());
@@ -42,6 +45,14 @@ public class ChannelService {
     return userUtilService.getUserTeamsByUser(user)
             .stream().map(userTeam -> userTeam.getTeam())
             .collect(Collectors.toList());
+  }
+
+  @Transactional(readOnly = true)
+  public ChannelDetailResponse getChannelDetailById(Long channelId) {
+    Channel channel = channelUtilService.getChannelById(channelId);
+    List<User> members = userChannelRepository.findAllByChannelId(channelId).stream()
+            .map(UserChannel::getUser).toList();
+    return ChannelDetailResponse.from(channel, members);
   }
 
 

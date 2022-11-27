@@ -2,8 +2,10 @@ package com.paran.aplay.channel.controller;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.dto.request.ChannelCreateRequest;
+import com.paran.aplay.channel.dto.response.ChannelDetailResponse;
 import com.paran.aplay.channel.dto.response.ChannelResponse;
 import com.paran.aplay.channel.service.ChannelService;
+import com.paran.aplay.channel.service.ChannelUtilService;
 import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.common.ApiResponse;
@@ -12,6 +14,8 @@ import com.paran.aplay.common.entity.CurrentUser;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
+import com.paran.aplay.user.service.UserUtilService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -61,12 +65,21 @@ public class ChannelController {
           sort = {"createdAt"},
           direction = Sort.Direction.DESC
   ) Pageable pageable, @PathVariable Long channelId) {
-    System.out.println(pageable);
     PageResponse<ChatResponse> pageResponse = new PageResponse<>(chatService.getChatMessages(channelId, pageable));
     ApiResponse apiResponse = ApiResponse.builder()
             .message("채팅 이력 조회 성공하였습니다.")
             .status(HttpStatus.OK.value())
             .data(pageResponse)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @GetMapping("/{channelId}")
+  public ResponseEntity<ApiResponse<List<ChannelDetailResponse>>> getChannelByUser(@PathVariable Long channelId) {
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("채널 단건 조회 성공하였습니다.")
+            .status(OK.value())
+            .data(channelService.getChannelDetailById(channelId))
             .build();
     return ResponseEntity.ok(apiResponse);
   }
