@@ -76,15 +76,6 @@ jib {
         ports=['8080']
         jvmFlags=["-Dspring.profiles.active=dev", "-Dkms.url=ws://kms-service.aplay.svc.cluster.local:8888/kurento"]
     }
-    extraDirectories {
-        paths {
-            path {
-                // copies the contents of 'src/main/another/dir' into '/extras' on the container
-                from = file('oci-secrets')
-                into = '/ocikey'
-            }
-        }
-    }
 
 }
 
