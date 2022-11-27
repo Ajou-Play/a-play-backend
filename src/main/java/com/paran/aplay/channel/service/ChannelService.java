@@ -14,6 +14,8 @@ import com.paran.aplay.user.domain.UserChannel;
 import com.paran.aplay.user.repository.UserChannelRepository;
 import com.paran.aplay.user.service.UserUtilService;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,14 @@ public class ChannelService {
   public List<Channel> getAllChannelsByTeam(Team team) {
     return channelRepository.findByTeamId(team.getId());
   }
+
+  @Transactional(readOnly = true)
+  public List<Team> getAllTeamsByUser(User user) {
+    return userUtilService.getUserTeamsByUser(user)
+            .stream().map(userTeam -> userTeam.getTeam())
+            .collect(Collectors.toList());
+  }
+
 
   @Transactional
   public Channel createChannel(String name, Team team) {

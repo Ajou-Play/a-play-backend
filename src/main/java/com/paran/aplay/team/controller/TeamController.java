@@ -9,20 +9,17 @@ import com.paran.aplay.common.ApiResponse;
 import com.paran.aplay.common.entity.CurrentUser;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.dto.request.TeamCreateRequest;
+import com.paran.aplay.team.dto.response.TeamDetailResponse;
 import com.paran.aplay.team.dto.response.TeamResponse;
 import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,6 +28,48 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
   private final TeamService teamService;
   private final ChannelService channelService;
+
+  @GetMapping
+  public ResponseEntity<ApiResponse<List<TeamResponse>>> getUserTeams(@CurrentUser User user) {
+    List<TeamResponse> res = teamService.getAllTeamByUser(user);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("유저가 속한 팀 조회에 성공하였습니다.")
+            .status(OK.value())
+            .data(res)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @GetMapping("/{teamId}")
+  public ResponseEntity<ApiResponse<TeamDetailResponse>> getTeamDetailByTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    TeamDetailResponse res = teamService.getTeamDetailById(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀에 해당하는 상세한 정보 조회에 성공하였습니다.")
+            .status(OK.value())
+            .data(res)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @PatchMapping("/{teamId}")
+  public ResponseEntity<ApiResponse> leaveUserFromTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    Boolean res = teamService.deleteUserFromTeam(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀 탈퇴 성공하였습니다.")
+            .status(OK.value())
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @DeleteMapping("/{teamId}")
+  public ResponseEntity<ApiResponse> removeTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    Boolean res = teamService.deleteTeam(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀 삭제 성공하였습니다.")
+            .status(OK.value())
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
 
   @GetMapping("/{teamId}/channels")
   public ResponseEntity<ApiResponse<List<ChannelResponse>>> getAllChannelsByTeam(@PathVariable("teamId") Long teamId) {

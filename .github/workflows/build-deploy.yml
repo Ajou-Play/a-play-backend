@@ -2,7 +2,7 @@ name: Docker Image Build & Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feat*" ]
   pull_request:
     branches: [ "main" ]
 
@@ -33,18 +33,15 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-  
-      - 
-        name: Clone Secrets
-        run: git clone https://github.com/Ajou-Play/secrets-env.git
-  
-      - 
-        name: Change Secrets
-        run: mv secrets-env/application-local.yml src/main/resources/application-local.yml
-        
-      - 
-        name: Log Secrets
-        run: cat src/main/resources/application-local.yml | grep url
+
+      - name: Clone OCI
+        run: git clone https://github.com/Ajou-Play/oci-secrets.git
+
+      - name: Move OCI
+        run: sudo cp oci-secrets/* src/main/resources
+
+      - name: Log OCI
+        run: sudo cat src/main/resources/oci_config
 
       -
         name: Login to Docker Hub
