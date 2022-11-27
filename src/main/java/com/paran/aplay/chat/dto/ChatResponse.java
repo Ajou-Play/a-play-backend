@@ -34,7 +34,6 @@ public class ChatResponse {
 
   public static ChatResponse from(ChatMessage chatMessage) {
     User sender = chatMessage.getSender();
-    System.out.println(chatMessage.getId());
     return ChatResponse.builder()
         //.messageId(chatMessage.getId())
         .channelId(chatMessage.getChannel().getId())
