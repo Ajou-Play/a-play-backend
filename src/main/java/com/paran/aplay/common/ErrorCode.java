@@ -56,7 +56,10 @@ public enum ErrorCode {
   CHAT_NOT_FOUND(500, "CHT001", "채팅을 찾을 수 없습니다."),
 
   //MEETING
-  STOMP_ERROR(500, "M001", "미팅 연결 중 에러 발생하였습니다.");
+  STOMP_ERROR(500, "M001", "미팅 연결 중 에러 발생하였습니다."),
+
+  //DOCUMENT
+  DOCUMENT_NOT_FOUND(500, "D001", "문서를 찾을 수 없습니다.");
   private final int status;
   private final String code;
   private final String message;
