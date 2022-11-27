@@ -75,8 +75,8 @@ public class TeamController {
   }
 
   @GetMapping("/{teamId}/channels")
-  public ResponseEntity<ApiResponse<List<ChannelResponse>>> getAllChannelsByTeam(@PathVariable("teamId") Long teamId) {
-    Team team = teamService.getTeamById(teamId);
+  public ResponseEntity<ApiResponse<List<ChannelResponse>>> getAllChannelsByTeam(@CurrentUser User user, @PathVariable("teamId") Long teamId) {
+    Team team = teamService.validateTeamByUser(user, teamId);
     List<ChannelResponse> channelResponseList = channelService.getAllChannelsByTeam(team).stream().map(
         ChannelResponse::from).toList();
     ApiResponse apiResponse = ApiResponse.builder()
