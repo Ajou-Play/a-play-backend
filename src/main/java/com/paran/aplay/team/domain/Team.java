@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import com.paran.aplay.common.util.OciObjectStorageUtil;
 import com.paran.aplay.team.dto.request.TeamCreateRequest;
+import com.paran.aplay.team.dto.request.TeamUpdateRequest;
 import com.paran.aplay.team.service.TeamService;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,12 +51,25 @@ public class Team extends BaseEntity {
   @Column(length = MAX_PROFILEIMAGE_LENGTH)
   private String profileImage = DEFAULT_PROFILE_IMAGE_URL;
 
-  public void updateName(String name) {
-    this.name = name;
-  }
-
   public void updateProfileImage(String profileImage) {
     this.profileImage = profileImage;
+  }
+
+  public boolean updateTeam(TeamUpdateRequest dto) {
+    boolean isUpdated = false;
+    if(dto.getName() != null) {
+      this.name = dto.getName();
+      isUpdated = true;
+    }
+    if(dto.getDescription() != null) {
+      this.description = dto.getDescription();
+      isUpdated = true;
+    }
+    if(dto.getIsPublic() != null) {
+      this.isPublic = dto.getIsPublic();
+      isUpdated = true;
+    }
+    return isUpdated;
   }
 
   public Team(String name) {

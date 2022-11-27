@@ -11,4 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class TeamUpdateRequest {
     private String name;
     private String profileImage;
+    private String description;
+    private Boolean isPublic;
 }

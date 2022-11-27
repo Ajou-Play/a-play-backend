@@ -121,11 +121,7 @@ public class TeamService {
 
   @Transactional
   public void updateTeam(Team team, TeamUpdateRequest request, MultipartFile image) {
-    boolean isUpdated = false;
-    if(request.getName() != null) {
-      team.updateName(request.getName());
-      isUpdated = true;
-    }
+    boolean isUpdated = team.updateTeam(request);
     if("".equals(request.getProfileImage())) {
       team.updateProfileImage(Team.DEFAULT_PROFILE_IMAGE_URL);
       isUpdated = true;
