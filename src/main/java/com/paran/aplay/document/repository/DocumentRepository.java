@@ -11,5 +11,5 @@ import org.springframework.data.repository.query.Param;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Query(value = "select d from Document d join fetch d.channel c where c.id = :channelId",
             countQuery = "select count(d) from Document d where d.channel.id = :channelId")
-    Page<ChatMessage> findDoucmentsByChannelId(@Param("channelId") Long channelId, Pageable pageable);
+    Page<Document> findDoucmentsByChannelId(@Param("channelId") Long channelId, Pageable pageable);
 }

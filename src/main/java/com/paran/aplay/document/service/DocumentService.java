@@ -2,10 +2,15 @@ package com.paran.aplay.document.service;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.service.ChannelUtilService;
+import com.paran.aplay.chat.domain.ChatMessage;
+import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.document.domain.Document;
 import com.paran.aplay.document.dto.request.DocumentCreateRequest;
+import com.paran.aplay.document.dto.response.DocumentResponse;
 import com.paran.aplay.document.repository.DocumentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +32,11 @@ public class DocumentService {
                 .title(createRequest.getTitle())
                 .build();
         return documentRepository.save(document);
+    }
+
+    public Page<DocumentResponse> getDocuments(Long channelId, Pageable pageable) {
+        channelUtilService.validateChannelId(channelId);
+        Page<Document> documents = documentRepository.findDoucmentsByChannelId(channelId, pageable);
+        return documents.map(DocumentResponse::from);
     }
 }
