@@ -1,33 +1,37 @@
 package com.paran.aplay.channel.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.dto.request.ChannelCreateRequest;
 import com.paran.aplay.channel.dto.response.ChannelDetailResponse;
 import com.paran.aplay.channel.dto.response.ChannelResponse;
 import com.paran.aplay.channel.service.ChannelService;
-import com.paran.aplay.channel.service.ChannelUtilService;
 import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.common.ApiResponse;
 import com.paran.aplay.common.PageResponse;
 import com.paran.aplay.common.entity.CurrentUser;
+import com.paran.aplay.document.dto.response.DocumentResponse;
+import com.paran.aplay.document.service.DocumentService;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
-import com.paran.aplay.user.service.UserUtilService;
+import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-
-import static org.springframework.http.HttpStatus.OK;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +43,8 @@ public class ChannelController {
   private final TeamService teamService;
 
   private final ChatService chatService;
+
+  private final DocumentService documentService;
 
   @PostMapping
   public ResponseEntity<ApiResponse<ChannelResponse>> createChannel(@CurrentUser User user, @RequestBody @Valid ChannelCreateRequest request) {
@@ -80,6 +86,20 @@ public class ChannelController {
             .message("채널 단건 조회 성공하였습니다.")
             .status(OK.value())
             .data(channelService.getChannelDetailById(channelId))
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @GetMapping("/{channelId}/docs")
+  public ResponseEntity<ApiResponse<PageResponse<DocumentResponse>>> getDocuments(@PageableDefault(
+          sort = {"createdAt"},
+          direction = Sort.Direction.DESC
+  ) Pageable pageable, @PathVariable Long channelId) {
+    PageResponse<DocumentResponse> pageResponse = new PageResponse<>(documentService.getDocuments(channelId, pageable));
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("문서 다건 조회 성공")
+            .status(OK.value())
+            .data(pageResponse)
             .build();
     return ResponseEntity.ok(apiResponse);
   }
