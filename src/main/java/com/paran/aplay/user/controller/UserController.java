@@ -68,6 +68,18 @@ public class UserController {
             .body(response);
   }
 
+  @GetMapping("/{userId}/info")
+  public ResponseEntity<ApiResponse<UserDetailResponse>> getUserInfo(@CurrentUser User user, @PathVariable("userId") Long userId) {
+    User tUser = userUtilService.getUserById(userId);
+    UserDetailResponse res = UserDetailResponse.from(tUser);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("유저 정보 조회 성공")
+            .status(CREATED.value())
+            .data(res)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
   @PostMapping("/signup")
   public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@RequestBody @Valid
   UserSignUpRequest request) {
@@ -114,7 +126,7 @@ public class UserController {
     User updated = userService.updateUser(user, request, image);
     UserDetailResponse res = UserDetailResponse.from(updated);
     ApiResponse apiResponse = ApiResponse.builder()
-            .message("유저 프로필 수정에 성공하였습니다.")
+            .message("유저 정보 수정 성공")
             .status(OK.value())
             .data(res)
             .build();
