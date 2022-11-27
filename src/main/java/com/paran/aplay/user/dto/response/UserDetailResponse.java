@@ -1,5 +1,6 @@
 package com.paran.aplay.user.dto.response;
 
+import com.paran.aplay.user.domain.LocalUser;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.dto.ChatSender;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class UserDetailResponse {
 
     private final String profileImage;
 
-    private final boolean type;
+    private String type;
 
     public static UserDetailResponse from(User user) {
         return UserDetailResponse.builder()
@@ -26,6 +27,7 @@ public class UserDetailResponse {
                 .email(user.getEmail())
                 .name(user.getName())
                 .profileImage(user.getProfileImage())
+                .type(user instanceof LocalUser ? "LOCAL" : "SOCIAL")
                 .build();
     }
 }

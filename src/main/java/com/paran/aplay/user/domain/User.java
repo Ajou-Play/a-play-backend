@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
+import com.paran.aplay.common.util.OciObjectStorageUtil;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class User extends BaseEntity {
 
+  public static final String DEFAULT_PROFILE_IMAGE_URL =
+          OciObjectStorageUtil.OBJECT_STORAGE_SERVER_URL + OciObjectStorageUtil.USER_PROFILE_IMAGE_PREFIX + "default.png";
   private static final String EMAIL_REGEX = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
   private static final String NAME_REGEX = "[a-zA-Z가-힣]+( [a-zA-Z가-힣]+)*";
@@ -69,12 +73,15 @@ public class User extends BaseEntity {
     this.authority = authority;
     this.email = email;
     this.name = name;
+    this.profileImage = DEFAULT_PROFILE_IMAGE_URL;
   }
 
   public void updateAuthority(Authority authority) {
     this.authority = authority;
   }
-
+  public void updateProfileImage(String profileImage) {
+    this.profileImage = profileImage;
+  }
   private static void validateName(String name) {
     if (name.length() > MAX_NAME_LENGTH) {
       throw new InvalidRequestException(INVALID_LENGTH);

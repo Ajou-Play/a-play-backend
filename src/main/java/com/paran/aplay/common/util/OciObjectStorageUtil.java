@@ -30,6 +30,7 @@ public class OciObjectStorageUtil {
     private static final String BUCKET_NAME = "aplay";
     public static final String OBJECT_STORAGE_SERVER_URL = "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/t1rIkBURO2oMlHCn9XKTFP0y_YcHiPCjF-5GsBGdnMW9tATZ6Meq1rLBXHu1ejjT/n/axgga8ceqe0b/b/aplay/o/";
     public static final String TEAM_PROFILE_IMAGE_PREFIX = "image/team/";;
+    public static final String USER_PROFILE_IMAGE_PREFIX = "image/user/";;
     private ObjectStorage client;
     private String bucketName;
     private String namespaceName;
