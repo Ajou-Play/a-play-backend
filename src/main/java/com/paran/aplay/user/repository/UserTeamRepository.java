@@ -11,9 +11,9 @@ import java.util.List;
 public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
   boolean existsByUserIdAndTeamId(@Param("userId") Long userId, @Param("teamId") Long teamId);
 
-  List<UserTeam> findAllByTeamId(@Param("teamId") Long longs);
+  List<UserTeam> findAllByTeamId(@Param("teamId") Long teamId);
 
-  List<UserTeam> findAllByUserId(@Param("userId") Long longs);
+  List<UserTeam> findAllByUserId(@Param("userId") Long userId);
 
   UserTeam findByUserIdAndTeamId(@Param("userId") Long userId, @Param("teamId") Long teamId);
 
