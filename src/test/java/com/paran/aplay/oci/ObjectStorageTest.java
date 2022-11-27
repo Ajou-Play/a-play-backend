@@ -36,50 +36,7 @@ public class ObjectStorageTest {
     @Test
     public void Test() throws IOException {
 
-        return;
 
-        /*
-        final String compartmentId = "null";
-        final String bucketName = "";
-        final String privateUrl = "";
-        final String object = "";
-
-        ConfigFileReader.ConfigFile config = ConfigFileReader.parse(privateUrl, "DEFAULT");
-
-        AuthenticationDetailsProvider provider = new ConfigFileAuthenticationDetailsProvider(config);
-
-
-        ObjectStorage client = new ObjectStorageClient(provider);
-        client.setRegion(Region.AP_CHUNCHEON_1);
-
-        System.out.println("Getting the namespace.");
-        GetNamespaceResponse namespaceResponse = client.getNamespace(GetNamespaceRequest.builder().build());
-
-        String namespaceName = namespaceResponse.getValue();
-
-        System.out.println("Creating Get bucket request");
-        List<GetBucketRequest.Fields> fieldsList = new ArrayList<>(2);
-        fieldsList.add(GetBucketRequest.Fields.ApproximateCount);
-        fieldsList.add(GetBucketRequest.Fields.ApproximateSize);
-        GetBucketRequest request =
-                GetBucketRequest.builder()
-                        .namespaceName(namespaceName)
-                        .bucketName(bucketName)
-                        .fields(fieldsList)
-                        .build();
-
-        System.out.println("Fetching bucket details");
-        GetBucketResponse response = client.getBucket(request);
-
-        System.out.println("Bucket Name : " + response.getBucket().getName());
-        System.out.println("Bucket Compartment : " + response.getBucket().getCompartmentId());
-        System.out.println(
-                "The Approximate total number of objects within this bucket : "
-                        + response.getBucket().getApproximateCount());
-        System.out.println(
-                "The Approximate total size of objects within this bucket : "
-                        + response.getBucket().getApproximateSize());
-        */
     }
 
 }

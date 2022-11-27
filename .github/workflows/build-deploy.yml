@@ -49,14 +49,11 @@ jobs:
       - name: Clone OCI
         run: git clone https://github.com/Ajou-Play/oci-secrets.git
 
-      - name: MKDIR OCI
-        run: mkdir -p ~/ocikey
-
       - name: Move OCI
-        run: cp oci-secrets/* ~/ocikey/
+        run: sudo cp oci-secrets/* src/main/resources
 
       - name: Log OCI
-        run: cat ~/ocikey/config
+        run: sudo cat src/main/resources/oci_config
 
       -
         name: Login to Docker Hub
