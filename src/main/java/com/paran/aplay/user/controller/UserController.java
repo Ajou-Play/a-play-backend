@@ -15,6 +15,7 @@ import com.paran.aplay.user.dto.request.UserSignUpRequest;
 import com.paran.aplay.user.dto.response.SignInResponse;
 import com.paran.aplay.user.dto.response.SignUpResponse;
 import com.paran.aplay.user.dto.response.TokenResponse;
+import com.paran.aplay.user.dto.response.UserDetailResponse;
 import com.paran.aplay.user.service.UserService;
 import com.paran.aplay.user.service.UserUtilService;
 import java.net.URI;
@@ -24,6 +25,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +90,17 @@ public class UserController {
             .message("토큰이 재발급되었습니다.")
             .status(OK.value())
             .data(new TokenResponse(newAccessToken))
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @GetMapping("/{userId}/info")
+  public ResponseEntity<ApiResponse<UserDetailResponse>> getUserDetailInfo(@PathVariable Long userId) {
+    User user = userUtilService.getUserById(userId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("유저 정보 조회 성공")
+            .status(OK.value())
+            .data(UserDetailResponse.from(user))
             .build();
     return ResponseEntity.ok(apiResponse);
   }
