@@ -12,6 +12,7 @@ import com.oracle.bmc.objectstorage.requests.PutObjectRequest;
 import com.oracle.bmc.objectstorage.responses.GetBucketResponse;
 import com.oracle.bmc.objectstorage.responses.GetNamespaceResponse;
 import com.oracle.bmc.objectstorage.responses.PutObjectResponse;
+import com.paran.aplay.team.domain.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ import java.util.Optional;
 public class OciObjectStorageUtil {
 
     private static final String BUCKET_NAME = "aplay";
+    public static final String OBJECT_STORAGE_SERVER_URL = "https://objectstorage.ap-chuncheon-1.oraclecloud.com/p/t1rIkBURO2oMlHCn9XKTFP0y_YcHiPCjF-5GsBGdnMW9tATZ6Meq1rLBXHu1ejjT/n/axgga8ceqe0b/b/aplay/o/";
+    public static final String TEAM_PROFILE_IMAGE_PREFIX = "image/team/";;
     private ObjectStorage client;
     private String bucketName;
     private String namespaceName;

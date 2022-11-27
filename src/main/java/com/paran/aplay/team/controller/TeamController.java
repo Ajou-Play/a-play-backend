@@ -9,6 +9,7 @@ import com.paran.aplay.common.ApiResponse;
 import com.paran.aplay.common.entity.CurrentUser;
 import com.paran.aplay.team.domain.Team;
 import com.paran.aplay.team.dto.request.TeamCreateRequest;
+import com.paran.aplay.team.dto.request.TeamUpdateRequest;
 import com.paran.aplay.team.dto.response.TeamDetailResponse;
 import com.paran.aplay.team.dto.response.TeamResponse;
 import com.paran.aplay.team.service.TeamService;
@@ -18,8 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -83,6 +86,26 @@ public class TeamController {
         .build();
     return ResponseEntity.ok(apiResponse);
   }
+
+  @PutMapping(value = "/{teamId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseEntity<ApiResponse<TeamDetailResponse>> updateTeam(
+          @CurrentUser User user,
+          @PathVariable("teamId") Long teamId,
+          @RequestPart("data") TeamUpdateRequest request,
+          @RequestPart(value = "profileImage", required = false) MultipartFile image
+          ) {
+    Team team = teamService.validateTeamByUser(user, teamId);
+    teamService.updateTeam(team, request, image);
+
+    TeamDetailResponse res = teamService.getTeamDetailById(user, teamId);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("팀에 해당하는 상세한 정보 수정에 성공하였습니다.")
+            .status(OK.value())
+            .data(res)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
 
   @PostMapping
   public ResponseEntity<ApiResponse<TeamResponse>> createTeam(@CurrentUser User user, @RequestBody @Valid TeamCreateRequest request) {

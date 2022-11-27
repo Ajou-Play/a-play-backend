@@ -21,7 +21,7 @@ public class TeamDetailResponse {
                 .teamId(team.getId())
                 .name(team.getName())
                 .members(TeamDetailUser.from(members))
-                .profileImage("null")
+                .profileImage(team.getProfileImage())
                 .build();
     }
 
