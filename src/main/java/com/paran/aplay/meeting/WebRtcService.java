@@ -75,27 +75,29 @@ public class WebRtcService {
         final Optional<Long> roomIdResult = roomUserService.findRoomIdByUserId(userId);
         if (roomIdResult.isEmpty()) return;
         Long roomId = roomIdResult.get();
-        final WebRtcEndpoint incomingEndpoint = Objects.equals(userId, senderId)
+        WebRtcEndpoint incomingEndpoint = Objects.equals(userId, senderId)
                 ? kurentoRoomService.getOutgoingEndpoint(userId)
-                : kurentoRoomService.createIncomingEndpoint(
-                        roomId,
-                        userId,
-                        senderId,
-                        event -> {
-                            final IceCandidate iceCandidate = event.getCandidate();
-                            stompMessagingService.sendToUser(userId, EventType.iceCandidate,
-                                    IceCandidateResponse.builder()
-                                            .eventType(EventType.iceCandidate)
-                                            .userId(userId)
-                                            .candidate(Candidate.of(iceCandidate))
-                                            .build()
-                            );
-                        }
-                );
+                : kurentoRoomService.getIncomingEndpoint(userId, senderId);
 
-        if (!Objects.equals(userId, senderId)) {
-            kurentoRoomService.getOutgoingEndpoint(senderId).connect(incomingEndpoint);
+        if (incomingEndpoint == null) {
+            incomingEndpoint = kurentoRoomService.createIncomingEndpoint(
+                    roomId,
+                    userId,
+                    senderId,
+                    event -> {
+                        final IceCandidate iceCandidate = event.getCandidate();
+                        stompMessagingService.sendToUser(userId, EventType.iceCandidate,
+                                IceCandidateResponse.builder()
+                                        .eventType(EventType.iceCandidate)
+                                        .userId(senderId)
+                                        .candidate(Candidate.of(iceCandidate))
+                                        .build()
+                        );
+                    }
+            );
         }
+
+        kurentoRoomService.getOutgoingEndpoint(senderId).connect(incomingEndpoint);
 
         final String sdpAnswer = incomingEndpoint.processOffer(sdpOffer);
         stompMessagingService.sendToUser(userId, EventType.receiveVideoAnswer,
