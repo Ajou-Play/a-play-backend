@@ -37,6 +37,10 @@ public class Channel {
   @JoinColumn(name = "team_id", nullable = false)
   private Team team;
 
+  public void updateName(String name) {
+    this.name = name;
+  }
+
   public Channel(String name, Team team) {
     if (!hasText(name)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);

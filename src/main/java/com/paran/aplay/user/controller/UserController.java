@@ -113,9 +113,7 @@ public class UserController {
 
   @PatchMapping("/me/password")
   public ResponseEntity<ApiResponse> updateUserPassword(@CurrentUser User user, @RequestBody @Valid UserUpdatePasswordRequest request) {
-
     userService.changeUserPassword(user, request);
-
     ApiResponse apiResponse = ApiResponse.builder()
             .message("비밀번호 변경 성공")
             .status(OK.value())

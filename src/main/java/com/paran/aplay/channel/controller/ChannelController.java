@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.dto.request.ChannelCreateRequest;
+import com.paran.aplay.channel.dto.request.ChannelInviteRequest;
+import com.paran.aplay.channel.dto.request.ChannelUpdateRequest;
 import com.paran.aplay.channel.dto.response.ChannelDetailResponse;
 import com.paran.aplay.channel.dto.response.ChannelResponse;
 import com.paran.aplay.channel.service.ChannelService;
@@ -26,12 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -76,6 +73,33 @@ public class ChannelController {
             .message("채팅 이력 조회 성공하였습니다.")
             .status(HttpStatus.OK.value())
             .data(pageResponse)
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+  @PatchMapping("/{channelId}")
+  public ResponseEntity<ApiResponse<List<ChannelResponse>>> updateChannel(
+          @CurrentUser User user,
+          @PathVariable Long channelId,
+          @RequestBody @Valid ChannelUpdateRequest req
+  ) {
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("채널 수정에 성공하였습니다.")
+            .status(OK.value())
+            .data(channelService.updateChannel(channelId, user, req))
+            .build();
+    return ResponseEntity.ok(apiResponse);
+  }
+
+  @PatchMapping("/{channelId}/invite")
+  public ResponseEntity<ApiResponse> inviteUserToChannel(
+          @CurrentUser User user,
+          @PathVariable Long channelId,
+          @RequestBody @Valid ChannelInviteRequest req
+  ) {
+    channelService.inviteUsersToChannel(user, channelId, req);
+    ApiResponse apiResponse = ApiResponse.builder()
+            .message("채널 유저 초대에 성공")
+            .status(OK.value())
             .build();
     return ResponseEntity.ok(apiResponse);
   }

@@ -5,7 +5,7 @@ spring:
     password: root1234
     url: jdbc:mysql://localhost:3306/aplay
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true

@@ -11,10 +11,13 @@ public class TeamResponse {
 
   private final String name;
 
+  private final String profileImage;
+
   public static TeamResponse from(Team team) {
     return TeamResponse.builder()
         .teamId(team.getId())
         .name(team.getName())
+        .profileImage(team.getProfileImage())
         .build();
   }
 }
