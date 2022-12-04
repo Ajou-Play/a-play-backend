@@ -1,6 +1,10 @@
 package com.paran.aplay.meeting;
 
+import static org.kurento.client.StatsType.session;
+
 import com.paran.aplay.meeting.dto.Candidate;
+import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.annotation.PreDestroy;
@@ -73,6 +77,9 @@ public class KurentoRoomService {
 
     // get
     public WebRtcEndpoint getOutgoingEndpoint(Long userId) {
+        if(!outgoingEndpoints.containsKey(userId)) {
+            log.warn("No outgoingEndpoint found for [{}]", userId);
+        }
         return outgoingEndpoints.get(userId);
     }
 

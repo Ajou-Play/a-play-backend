@@ -10,6 +10,7 @@ import com.paran.aplay.chat.dto.ChatRequest;
 import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.team.domain.Team;
+import com.paran.aplay.team.dto.request.TeamCreateRequest;
 import com.paran.aplay.team.service.TeamService;
 import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.dto.request.UserSignUpRequest;
@@ -82,7 +83,7 @@ public class StompSupportTest {
         .name("김승은")
         .password("test1234!")
         .build());
-    testTeam = teamService.createTeam("A-Play");
+    testTeam = teamService.createTeam(TeamCreateRequest.builder().name("A-Play").isPublic(true).build(), null);
     teamService.inviteUserToTeam(testUser, testTeam);
     testChannel = channelService.createChannel("general", testTeam);
     channelService.inviteUserToChannel(testUser, testChannel);

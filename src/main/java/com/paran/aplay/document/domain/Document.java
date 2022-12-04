@@ -47,11 +47,11 @@ public class Document extends BaseEntity {
   private DocumentType type;
 
   @Lob
-  private String content;
+  private String content = "";
 
   @Builder
   public Document(Channel channel, String title, DocumentType type, String content) {
-    if (!hasText(content) || !hasText(title)) {
+    if (!hasText(title)) {
       throw new InvalidRequestException(MISSING_REQUEST_PARAMETER);
     }
 

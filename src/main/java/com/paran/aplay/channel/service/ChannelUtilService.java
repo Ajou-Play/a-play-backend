@@ -19,6 +19,7 @@ public class ChannelUtilService {
 
     @Transactional(readOnly = true)
     public Channel getChannelById(Long channelId) {
+        System.out.println(channelId);
         return channelRepository.findById(channelId).orElseThrow(() -> new NotFoundException(
                 CHANNEL_NOT_FOUND));
     }
