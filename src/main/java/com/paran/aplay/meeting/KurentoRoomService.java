@@ -41,7 +41,7 @@ public class KurentoRoomService {
         final MediaPipeline mediaPipeline = getMediaPipeline(roomId);
 
         log.info("Create [OUTGOING_ENDPOINT] for identifier [{}]", userId);
-        final WebRtcEndpoint outgoingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).build();
+        final WebRtcEndpoint outgoingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).useDataChannels().build();
         outgoingEndpoint.addIceCandidateFoundListener(listener);
         outgoingEndpoints.put(userId, outgoingEndpoint);
     }
@@ -68,9 +68,8 @@ public class KurentoRoomService {
         final MediaPipeline mediaPipeline = getMediaPipeline(roomId);
 
         log.info("Create [INCOMING_ENDPOINT] for identifier [{}]", userId + "-" + senderId);
-        final WebRtcEndpoint incomingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).build();
+        final WebRtcEndpoint incomingEndpoint = new WebRtcEndpoint.Builder(mediaPipeline).useDataChannels().build();
         incomingEndpoint.addIceCandidateFoundListener(listener);
-
         this.incomingEndpoints.get(userId).put(senderId, incomingEndpoint);
 
         return incomingEndpoint;
