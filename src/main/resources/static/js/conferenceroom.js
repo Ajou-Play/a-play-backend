@@ -34,7 +34,7 @@ async function register() {
 		"password" : password
 	}
 
-	await axios.post('/api/v1/users/local/signin', loginMessage)
+	await axios.post('https://www.aplay.n-e.kr/api/v1/users/local/signin', loginMessage)
 		.then((response) => {
 			accessToken = response.data.data.accessToken;
 			userId = response.data.data.userId;
@@ -93,7 +93,7 @@ async function register() {
 		'accessToken' : accessToken
 	};
 
-	var socket = new SockJS('http://localhost:8080/api/socket/meeting');
+	var socket = new SockJS('https://www.aplay.n-e.kr/api/socket/meeting');
 	stompClient = Stomp.over(socket);
 	await stompClient.connect(connectHeader, connectCallback, errorCallback);
 }
