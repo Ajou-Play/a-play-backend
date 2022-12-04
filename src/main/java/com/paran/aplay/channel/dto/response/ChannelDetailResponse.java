@@ -18,8 +18,6 @@ public class ChannelDetailResponse {
 
     private final List<ChannelDetailUser> members;
 
-    private final String profileImage;
-
     public static ChannelDetailResponse from(Channel channel, List<User> members) {
         return ChannelDetailResponse.builder()
                 .teamId(channel.getTeam().getId())

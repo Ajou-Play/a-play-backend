@@ -3,6 +3,7 @@ package com.paran.aplay.channel.service;
 import static com.paran.aplay.common.ErrorCode.*;
 
 import com.paran.aplay.channel.domain.Channel;
+import com.paran.aplay.channel.dto.request.ChannelInviteRequest;
 import com.paran.aplay.channel.dto.request.ChannelUpdateRequest;
 import com.paran.aplay.channel.dto.response.ChannelDetailResponse;
 import com.paran.aplay.channel.dto.response.ChannelResponse;
@@ -16,6 +17,8 @@ import com.paran.aplay.user.domain.User;
 import com.paran.aplay.user.domain.UserChannel;
 import com.paran.aplay.user.repository.UserChannelRepository;
 import com.paran.aplay.user.service.UserUtilService;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +75,22 @@ public class ChannelService {
     Channel newChannel = new Channel(name, team);
     return channelRepository.save(newChannel);
   }
+
+  @Transactional
+  public void inviteUsersToChannel(User user, Long channelId, ChannelInviteRequest req) {
+    Channel channel = channelUtilService.getChannelById(channelId);
+    boolean isExist =  userUtilService.checkUserExistsInChannel(user, channel);
+    if(!isExist) throw new PermissionDeniedException(USER_NOT_ALLOWED);
+    Arrays.stream(req.getMembers())
+            .forEach(email -> {
+              try {
+                User member = userUtilService.getUserByEmail(email);
+                inviteUserToChannel(member, channel);
+              }
+              catch (Exception e){}
+            });
+  }
+
   @Transactional
   public void inviteUserToChannel(User user, Channel channel) {
     if (!userUtilService.checkUserExistsInTeam(user, channel.getTeam())) throw new PermissionDeniedException(USER_NOT_ALLOWED);
