@@ -26,7 +26,6 @@ public class ChannelDetailResponse {
                 .channelId(channel.getId())
                 .name(channel.getName())
                 .members(ChannelDetailUser.from(members))
-                .profileImage("")
                 .build();
     }
 
