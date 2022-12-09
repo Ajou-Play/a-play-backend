@@ -32,6 +32,7 @@ public class DocumentService {
                 .type(createRequest.getType())
                 .channel(channel)
                 .title(createRequest.getTitle())
+                .content("")
                 .build();
         return documentRepository.save(document);
     }
