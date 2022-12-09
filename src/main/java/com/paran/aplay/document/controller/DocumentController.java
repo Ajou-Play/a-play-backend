@@ -65,5 +65,15 @@ public class DocumentController {
         return ResponseEntity.ok().body(apiResponse);
     }
 
+    @DeleteMapping("/{documentId}")
+    public ResponseEntity<ApiResponse> deleteDocument(@PathVariable Long documentId) {
+        Document document = documentService.getDocumentById(documentId);
+        documentService.deleteDocument(document);
+        ApiResponse apiResponse = ApiResponse.builder()
+                .message("문서 삭제 성공")
+                .status(OK.value())
+                .build();
+        return ResponseEntity.ok().body(apiResponse);
+    }
 
 }

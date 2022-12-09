@@ -54,4 +54,8 @@ public class DocumentService {
         document.updateTitle(updateRequest.getTitle());
         return documentRepository.save(document);
     }
+
+    public void deleteDocument(Document document) {
+        documentRepository.delete(document);
+    }
 }
