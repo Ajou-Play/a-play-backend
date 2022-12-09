@@ -60,4 +60,12 @@ public class Document extends BaseEntity {
     this.type = type;
     this.content = content;
   }
+
+  public void updateContent(String content) {
+    this.content = content;
+  }
+
+  public void updateTitle(String title) {
+    this.title = title;
+  }
 }

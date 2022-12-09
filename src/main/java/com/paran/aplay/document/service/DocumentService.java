@@ -8,6 +8,7 @@ import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.document.domain.Document;
 import com.paran.aplay.document.dto.request.DocumentCreateRequest;
+import com.paran.aplay.document.dto.request.DocumentUpdateRequest;
 import com.paran.aplay.document.dto.response.DocumentMetaResponse;
 import com.paran.aplay.document.dto.response.DocumentResponse;
 import com.paran.aplay.document.repository.DocumentRepository;
@@ -46,5 +47,11 @@ public class DocumentService {
 
     public Document getDocumentById(Long documentId) {
         return documentRepository.findById(documentId).orElseThrow(() -> new NotFoundException(ErrorCode.DOCUMENT_NOT_FOUND));
+    }
+
+    public Document saveDocument(Document document, DocumentUpdateRequest updateRequest) {
+        document.updateContent(updateRequest.getContent());
+        document.updateTitle(updateRequest.getTitle());
+        return documentRepository.save(document);
     }
 }
