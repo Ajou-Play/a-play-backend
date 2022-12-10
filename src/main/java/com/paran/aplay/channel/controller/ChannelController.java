@@ -14,6 +14,7 @@ import com.paran.aplay.chat.service.ChatService;
 import com.paran.aplay.common.ApiResponse;
 import com.paran.aplay.common.PageResponse;
 import com.paran.aplay.common.entity.CurrentUser;
+import com.paran.aplay.document.dto.response.DocumentMetaResponse;
 import com.paran.aplay.document.dto.response.DocumentResponse;
 import com.paran.aplay.document.service.DocumentService;
 import com.paran.aplay.team.domain.Team;
@@ -115,11 +116,11 @@ public class ChannelController {
   }
 
   @GetMapping("/{channelId}/docs")
-  public ResponseEntity<ApiResponse<PageResponse<DocumentResponse>>> getDocuments(@PageableDefault(
+  public ResponseEntity<ApiResponse<PageResponse<DocumentMetaResponse>>> getDocuments(@PageableDefault(
           sort = {"createdAt"},
           direction = Sort.Direction.DESC
   ) Pageable pageable, @PathVariable Long channelId) {
-    PageResponse<DocumentResponse> pageResponse = new PageResponse<>(documentService.getDocuments(channelId, pageable));
+    PageResponse<DocumentMetaResponse> pageResponse = new PageResponse<>(documentService.getDocuments(channelId, pageable));
     ApiResponse apiResponse = ApiResponse.builder()
             .message("문서 다건 조회 성공")
             .status(OK.value())

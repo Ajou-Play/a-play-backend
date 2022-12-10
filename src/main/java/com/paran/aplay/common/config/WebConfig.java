@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
@@ -48,6 +49,14 @@ public class WebConfig implements WebMvcConfigurer {
         )
         .maxAge(3600)
         .allowCredentials(true);
+  }
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    WebMvcConfigurer.super.addResourceHandlers(registry);
+    registry.addResourceHandler("/static/**")
+            .addResourceLocations("classpath:/static/")
+            .setCachePeriod(20);
   }
 
   @Bean
