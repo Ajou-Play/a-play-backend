@@ -5,15 +5,12 @@ import static java.util.Objects.nonNull;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.service.ChannelUtilService;
-import com.paran.aplay.chat.domain.ChatMessage;
-import com.paran.aplay.chat.dto.ChatResponse;
 import com.paran.aplay.common.ErrorCode;
 import com.paran.aplay.common.error.exception.NotFoundException;
 import com.paran.aplay.document.domain.Document;
 import com.paran.aplay.document.dto.request.DocumentCreateRequest;
 import com.paran.aplay.document.dto.request.DocumentUpdateRequest;
 import com.paran.aplay.document.dto.response.DocumentMetaResponse;
-import com.paran.aplay.document.dto.response.DocumentResponse;
 import com.paran.aplay.document.repository.DocumentRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 @RequiredArgsConstructor
