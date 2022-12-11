@@ -1,6 +1,7 @@
 package com.paran.aplay.document.service;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 import com.paran.aplay.channel.domain.Channel;
 import com.paran.aplay.channel.service.ChannelUtilService;
@@ -59,7 +60,7 @@ public class DocumentService {
 
     public Document saveDocument(Document document, DocumentUpdateRequest updateRequest) {
         document.updateContent(updateRequest.getContent());
-        document.updateTitle(updateRequest.getTitle());
+        if (nonNull(updateRequest.getTitle())) document.updateTitle(updateRequest.getTitle());
         return documentRepository.save(document);
     }
 
