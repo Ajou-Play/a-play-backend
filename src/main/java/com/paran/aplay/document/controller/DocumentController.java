@@ -31,6 +31,7 @@ public class DocumentController {
     @PostMapping
     public ResponseEntity<ApiResponse<DocumentResponse>> createDocument(
             @RequestBody @Valid DocumentCreateRequest createRequest) {
+
         DocumentResponse documentResponse = DocumentResponse.from(documentService.createDocument(createRequest));
         ApiResponse apiResponse = ApiResponse.builder()
                 .message("문서 생성 성공")

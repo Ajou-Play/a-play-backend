@@ -1,7 +1,6 @@
 package com.paran.aplay.document.dto.request;
 
 import com.paran.aplay.document.domain.DocumentType;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,6 @@ public class DocumentCreateRequest {
     @NotNull
     private Long channelId;
 
-    @NotBlank
     private String title;
 
     private DocumentType type;
