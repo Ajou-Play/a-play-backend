@@ -64,6 +64,7 @@ public class UserController {
             .userId(principal.getUser().getId())
             .accessToken(principal.getAccessToken())
             .refreshToken(refreshToken)
+            .userName(principal.getUser().getName())
             .build())
         .build();
     HttpHeaders headers = new HttpHeaders();
